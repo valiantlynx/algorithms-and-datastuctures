@@ -2,187 +2,178 @@
 #include <string>
 using namespace std;
 
-// Node structure for doubly linked list
-struct Node {
-    int id;
+// Node structure to represent each song in the playlist
+struct SongNode {
+    int songID;
     string title;
     string artist;
-    Node* next;
-    Node* prev;
+    SongNode* next;
+    SongNode* prev;
+
+    // Constructor to initialize a song node
+    SongNode(int id, string t, string a) : songID(id), title(t), artist(a), next(nullptr), prev(nullptr) {}
 };
 
-// Playlist class implementing a doubly linked list
+// Class to represent the Playlist (Doubly Linked List)
 class Playlist {
-private:
-    Node* head;
-    Node* tail;
+    SongNode* head;
+    SongNode* tail;
 
 public:
-    Playlist() {
-        head = nullptr;
-        tail = nullptr;
+    // Constructor to initialize the playlist
+    Playlist() : head(nullptr), tail(nullptr) {}
+
+    // Destructor to free memory when the playlist is destroyed
+    ~Playlist() {
+        SongNode* current = head;
+        while (current != nullptr) {
+            SongNode* nextNode = current->next;
+            delete current;
+            current = nextNode;
+        }
     }
 
-    // Add a new song at the end of the playlist
+    // Function to add a song to the end of the playlist
     void addSong(int id, string title, string artist) {
-        Node* newNode = new Node();
-        newNode->id = id;
-        newNode->title = title;
-        newNode->artist = artist;
-        newNode->next = nullptr;
-        newNode->prev = tail;
+        SongNode* newSong = new SongNode(id, title, artist);
 
-        if (tail != nullptr) {
-            tail->next = newNode;
+        if (tail == nullptr) { // If the playlist is empty
+            head = tail = newSong;
         } else {
-            head = newNode;
+            tail->next = newSong;
+            newSong->prev = tail;
+            tail = newSong;
         }
-        tail = newNode;
+
         cout << "Song added: " << title << " by " << artist << endl;
     }
 
-    // Remove a song from the playlist by ID
+    // Function to remove a song by its ID
     void removeSong(int id) {
-        Node* current = head;
+        SongNode* current = head;
 
         while (current != nullptr) {
-            if (current->id == id) {
+            if (current->songID == id) {
+                // If the song is found at the head
                 if (current == head) {
                     head = current->next;
-                    if (head != nullptr) {
-                        head->prev = nullptr;
-                    }
-                } else if (current == tail) {
+                    if (head != nullptr) head->prev = nullptr;
+                    else tail = nullptr; // If list becomes empty
+                }
+                // If the song is found at the tail
+                else if (current == tail) {
                     tail = current->prev;
-                    if (tail != nullptr) {
-                        tail->next = nullptr;
-                    }
-                } else {
+                    if (tail != nullptr) tail->next = nullptr;
+                }
+                // If the song is in the middle
+                else {
                     current->prev->next = current->next;
                     current->next->prev = current->prev;
                 }
 
+                cout << "Song removed: " << current->title << " by " << current->artist << endl;
                 delete current;
-                cout << "Song with ID " << id << " removed." << endl;
                 return;
             }
             current = current->next;
         }
-        cout << "Song with ID " << id << " not found." << endl;
+        cout << "Song with ID " << id << " not found!" << endl;
     }
 
-    // Display the playlist in forward order
-    void displayPlaylist() {
-        Node* current = head;
-        if (!current) {
-            cout << "Playlist is empty." << endl;
+    // Function to display the playlist from start to end
+    void displayPlaylist() const {
+        if (head == nullptr) {
+            cout << "The playlist is empty!" << endl;
             return;
         }
-
+        SongNode* current = head;
         cout << "Playlist: " << endl;
         while (current != nullptr) {
-            cout << "ID: " << current->id << " | Title: " << current->title << " | Artist: " << current->artist << endl;
+            cout << current->songID << ": " << current->title << " by " << current->artist << endl;
             current = current->next;
         }
     }
 
-    // Display the playlist in reverse order
-    void displayReversePlaylist() {
-        Node* current = tail;
-        if (!current) {
-            cout << "Playlist is empty." << endl;
+    // Function to display the playlist in reverse order
+    void displayReversePlaylist() const {
+        if (tail == nullptr) {
+            cout << "The playlist is empty!" << endl;
             return;
         }
-
-        cout << "Playlist in reverse order: " << endl;
+        SongNode* current = tail;
+        cout << "Playlist in reverse: " << endl;
         while (current != nullptr) {
-            cout << "ID: " << current->id << " | Title: " << current->title << " | Artist: " << current->artist << endl;
+            cout << current->songID << ": " << current->title << " by " << current->artist << endl;
             current = current->prev;
         }
     }
 
-    // Search for a song by ID
-    void searchSong(int id) {
-        Node* current = head;
+    // Function to search for a song by its ID
+    void searchSong(int id) const {
+        SongNode* current = head;
+
         while (current != nullptr) {
-            if (current->id == id) {
+            if (current->songID == id) {
                 cout << "Song found: " << current->title << " by " << current->artist << endl;
                 return;
             }
             current = current->next;
         }
-        cout << "Song with ID " << id << " not found." << endl;
-    }
-
-    // Destructor to clean up the allocated memory
-    ~Playlist() {
-        Node* current = head;
-        while (current != nullptr) {
-            Node* next = current->next;
-            delete current;
-            current = next;
-        }
-        cout << "Playlist destroyed." << endl;
+        cout << "Song with ID " << id << " not found!" << endl;
     }
 };
 
-// Main function with menu-driven interface
+// Main function to simulate the playlist management system
 int main() {
     Playlist playlist;
     int choice, id;
     string title, artist;
 
     do {
-        cout << "\nPlaylist Management System\n";
-        cout << "1. Add a new song\n";
-        cout << "2. Remove a song by ID\n";
-        cout << "3. Display the playlist\n";
-        cout << "4. Display the playlist in reverse order\n";
-        cout << "5. Search for a song by ID\n";
-        cout << "6. Exit\n";
+        cout << "\nMenu:\n";
+        cout << "1. Add Song\n";
+        cout << "2. Remove Song\n";
+        cout << "3. Display Playlist\n";
+        cout << "4. Display Reverse Playlist\n";
+        cout << "5. Search Song\n";
+        cout << "0. Exit\n";
         cout << "Enter your choice: ";
         cin >> choice;
 
         switch (choice) {
             case 1:
-                cout << "Enter Song ID: ";
+                cout << "Enter song ID: ";
                 cin >> id;
-                cout << "Enter Song Title: ";
-                cin.ignore();  // Ignore the newline left in the input stream
+                cout << "Enter song title: ";
+                cin.ignore(); // To handle the newline character from previous input
                 getline(cin, title);
-                cout << "Enter Artist Name: ";
+                cout << "Enter artist name: ";
                 getline(cin, artist);
                 playlist.addSong(id, title, artist);
                 break;
-
             case 2:
-                cout << "Enter Song ID to remove: ";
+                cout << "Enter song ID to remove: ";
                 cin >> id;
                 playlist.removeSong(id);
                 break;
-
             case 3:
                 playlist.displayPlaylist();
                 break;
-
             case 4:
                 playlist.displayReversePlaylist();
                 break;
-
             case 5:
-                cout << "Enter Song ID to search: ";
+                cout << "Enter song ID to search: ";
                 cin >> id;
                 playlist.searchSong(id);
                 break;
-
-            case 6:
-                cout << "Exiting Playlist Management System." << endl;
+            case 0:
+                cout << "Exiting Playlist Management System.\n";
                 break;
-
             default:
-                cout << "Invalid choice. Please try again." << endl;
+                cout << "Invalid choice! Please select a valid option.\n";
         }
-    } while (choice != 6);
+    } while (choice != 0);
 
     return 0;
 }
