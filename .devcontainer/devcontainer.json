@@ -4,10 +4,7 @@
 // 1. brew install --cask xquartz
 //////////////////////////////////////////////////////////////////////
 {
-	"name": "Ubuntu",
-	"remoteUser": "osdev",
-	"features": {},
-	"forwardPorts": [],
+	"name": "algorithms-and-datastuctures",
 
 	////////////////////////////////////
 	// UNCOMMENT to use prebuilt image
@@ -17,9 +14,14 @@
 	////////////////////////////////////
 	// UNCOMMENT to build manually
 	////////////////////////////////////
-	"build": {
-		"dockerfile": "../Dockerfile"
-	},
+	// "build": {
+	// 	"dockerfile": "../Dockerfile"
+	// },
+
+    // With docker compose 
+    "dockerComposeFile": ["../docker-compose.yml"],
+    "service": "app",
+    "workspaceFolder": "/work",
 
 
 	////////////////////////////////////
