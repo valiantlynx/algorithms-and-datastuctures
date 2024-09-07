@@ -10,20 +10,20 @@ struct SongNode {
     SongNode* next;
     SongNode* prev;
 
-    // Constructor to initialize a song node
+    // Constructor
     SongNode(int id, string t, string a) : songID(id), title(t), artist(a), next(nullptr), prev(nullptr) {}
 };
 
-// Class to represent the Playlist (Doubly Linked List)
+// Playlist Class (Doubly Linked List)
 class Playlist {
     SongNode* head;
     SongNode* tail;
 
 public:
-    // Constructor to initialize the playlist
+    // Constructor
     Playlist() : head(nullptr), tail(nullptr) {}
 
-    // Destructor to free memory when the playlist is destroyed
+    // Destructor  when playlist is destroyed
     ~Playlist() {
         SongNode* current = head;
         while (current != nullptr) {
@@ -31,13 +31,14 @@ public:
             delete current;
             current = nextNode;
         }
+        head = tail = nullptr; // Ensure pointers are reset
     }
 
-    // Function to add a song to the end of the playlist
+    // add a song to the end of the playlist
     void addSong(int id, string title, string artist) {
         SongNode* newSong = new SongNode(id, title, artist);
 
-        if (tail == nullptr) { // If the playlist is empty
+        if (tail == nullptr) { // the playlist is empty
             head = tail = newSong;
         } else {
             tail->next = newSong;
@@ -48,39 +49,39 @@ public:
         cout << "Song added: " << title << " by " << artist << endl;
     }
 
-    // Function to remove a song by its ID
     void removeSong(int id) {
         SongNode* current = head;
 
         while (current != nullptr) {
-            if (current->songID == id) {
-                // If the song is found at the head
-                if (current == head) {
-                    head = current->next;
-                    if (head != nullptr) head->prev = nullptr;
-                    else tail = nullptr; // If list becomes empty
-                }
-                // If the song is found at the tail
-                else if (current == tail) {
-                    tail = current->prev;
-                    if (tail != nullptr) tail->next = nullptr;
-                }
-                // If the song is in the middle
-                else {
-                    current->prev->next = current->next;
-                    current->next->prev = current->prev;
-                }
-
-                cout << "Song removed: " << current->title << " by " << current->artist << endl;
-                delete current;
-                return;
+            if (current->songID != id) {
+                continue;
             }
-            current = current->next;
-        }
+            // If the song is in the head
+            if (current == head) {
+                head = current->next;
+                if (head != nullptr) head->prev = nullptr;
+                else tail = nullptr;
+            }
+            // If the song is at the tail
+            else if (current == tail) {
+                tail = current->prev;
+                if (tail != nullptr) tail->next = nullptr;
+            }
+            // If is in the middle
+            else {
+                current->prev->next = current->next;
+                current->next->prev = current->prev;
+            }
+
+            cout << "Song removed: " << current->title << " by " << current->artist << endl;
+            delete current;
+            return;
+        } 
+        current = current->next;
+    
         cout << "Song with ID " << id << " not found!" << endl;
     }
 
-    // Function to display the playlist from start to end
     void displayPlaylist() const {
         if (head == nullptr) {
             cout << "The playlist is empty!" << endl;
@@ -94,7 +95,6 @@ public:
         }
     }
 
-    // Function to display the playlist in reverse order
     void displayReversePlaylist() const {
         if (tail == nullptr) {
             cout << "The playlist is empty!" << endl;
@@ -108,18 +108,18 @@ public:
         }
     }
 
-    // Function to search for a song by its ID
-    void searchSong(int id) const {
+    SongNode* searchSong(int id) const {
         SongNode* current = head;
 
         while (current != nullptr) {
             if (current->songID == id) {
                 cout << "Song found: " << current->title << " by " << current->artist << endl;
-                return;
+                return current;
             }
             current = current->next;
         }
         cout << "Song with ID " << id << " not found!" << endl;
+        return nullptr;
     }
 };
 
@@ -139,11 +139,18 @@ int main() {
         cout << "0. Exit\n";
         cout << "Enter your choice: ";
         cin >> choice;
-
+        // if the string is not removed it will loop forever
         switch (choice) {
             case 1:
                 cout << "Enter song ID: ";
                 cin >> id;
+                if (cin.fail() || id <= 0) {
+                    cin.clear();
+                    string invalid_input;
+                    cin >> invalid_input;
+                    cout << "Invalid ID. It should be a positive int.\n";
+                    break;
+                } // i added this checks cause it was crashing if not
                 cout << "Enter song title: ";
                 cin.ignore(); // To handle the newline character from previous input
                 getline(cin, title);
@@ -154,6 +161,10 @@ int main() {
             case 2:
                 cout << "Enter song ID to remove: ";
                 cin >> id;
+                if (id <= 0) {
+                    cout << "Invalid ID. It should be a positive int.\n";
+                    break;
+                }
                 playlist.removeSong(id);
                 break;
             case 3:
@@ -165,6 +176,10 @@ int main() {
             case 5:
                 cout << "Enter song ID to search: ";
                 cin >> id;
+                if (id <= 0) {
+                    cout << "Invalid ID. It should be a positive int.\n";
+                    break;
+                }
                 playlist.searchSong(id);
                 break;
             case 0:
