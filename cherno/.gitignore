@@ -1,0 +1,7 @@
+.dist
+output
+.env
+*.o
+*.exe
+*.i
+*.obj

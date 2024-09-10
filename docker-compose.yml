@@ -5,3 +5,4 @@ services:
     volumes:
       - .:/work
     restart: always
+    command: 'sh'
