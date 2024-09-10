@@ -1,5 +1,5 @@
 #pragma once 
 
-static void Log(const char* message) {
+inline void Log(const char* message) {
     std::cout << message << std::endl;
 }
