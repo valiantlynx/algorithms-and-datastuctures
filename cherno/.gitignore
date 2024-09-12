@@ -5,3 +5,4 @@ output
 *.exe
 *.i
 *.obj
+build

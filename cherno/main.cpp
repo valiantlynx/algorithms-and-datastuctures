@@ -1,6 +1,5 @@
 #include <iostream>
-
-void Log(const char* message);
+#include "Log.h"
 
 int main() {
     Log("Hello World!");
