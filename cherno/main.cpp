@@ -2,35 +2,39 @@
 
 #define LOG(x) std::cout << x << std::endl
 
-class Player {
+class Log {
 public:
-    int x, y;
-    int speed;
+    const int LogLevelError = 0;
+    const int LogLevelWarning = 1;
+    const int LogLevelInfo = 2;
 
-    void Move(int xa, int ya) {
-        x += xa * speed;
-        y += ya * speed;
+private:
+    int m_LogLevel = LogLevelInfo;
+
+public:
+    void SetLevel(int level) {
+        m_LogLevel = level;
     }
-};
 
-struct Data {
-    int x, y;
-
-    int Add(int x, int y) {
-        return x + y;
+    void Error(const char* message) {
+        if (m_LogLevel >= LogLevelError)
+            std::cout << "[ERROR]: " << message << std::endl;
     }
-};
+    void Warn(const char* message) {
+        if (m_LogLevel >= LogLevelWarning)
+            std::cout << "[WARNING]: " << message << std::endl;
+    }
+    void Info(const char* message) {
+        if (m_LogLevel >= LogLevelInfo)
+            std::cout << "[iNFO]: " << message << std::endl;
+    }
 
+};
 
 int main() {
-    Player player;
-    player.Move(1000, 1000);
-    
-    LOG(player.x);
-    Data data;
-    int result = data.Add(4, 3);
-
-    LOG(result);
-    
+    Log log;
+    log.Error("Hello!");
+    log.Warn("Hello!");
+    log.Info("Hello!");
     std::cin.get();
 }
