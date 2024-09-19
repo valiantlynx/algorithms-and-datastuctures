@@ -8,6 +8,14 @@ public:
         LevelError = 0, LevelWarning, LevelInfo
     };
 
+    Log() {
+        std::cout << "Logger initialized" << std::endl;
+    }
+
+    ~Log() {
+        std::cout << "Logger Uninitialized" << std::endl;
+    }
+
 private:
     Level m_LogLevel = LevelInfo;
 
@@ -27,8 +35,7 @@ public:
     void Info(const char* message) {
         if (m_LogLevel >= LevelInfo)
             std::cout << "[iNFO]: " << message << std::endl;
-    }
-
+    } 
 };
 
 int main() {
