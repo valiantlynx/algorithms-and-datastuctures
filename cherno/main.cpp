@@ -84,9 +84,10 @@ int main() {
     log.Info(entity->GetName().c_str()); // we excpect this to print the name of the player since a player is an entity but we are requesting for the name of the player but..
     // instead we get "Entity" printed. this is causewhen calling the method it calls the methos of the clas of whatever the type is
     // to fix this use virtual functions. trying this again after adding the virtual keyword we get correct
-   
+
+    std::cin.get();
+
     delete e;
     delete p;
     delete entity;
-    std::cin.get();
 }
