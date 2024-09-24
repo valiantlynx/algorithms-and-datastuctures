@@ -39,8 +39,12 @@ public:
     } 
 };
 
+class Printable {
+public:
+    virtual std::string GetClassName() = 0;
+};
 
-class Entity {
+class Entity : public Printable {
 public:
     float X, Y;
 
@@ -49,7 +53,7 @@ public:
         Y += ya;
     }
 
-    virtual std::string GetName() { return "Entity"; }
+    virtual std::string GetName() = 0;
 };
 
 class Player : public Entity {
@@ -63,6 +67,8 @@ public:
         : m_Name(name) {}
 
     std::string GetName() override { return m_Name; }
+    
+    std::string GetClassName() override { return "Player"; }
 
     void PrintName() {
         Log log;
@@ -71,23 +77,19 @@ public:
     }
 };
 
+// we need to be guaranteed that we have a class name 
+void PrintClassName(Printable* obj) {
+    Log log;
+    log.Info(obj->GetClassName().c_str());
+}
+
 int main() {
     Log log;
-    Entity* e = new Entity();
-    log.Info(e->GetName().c_str());
 
     Player* p = new Player("Valiantlynx");
-    log.Info(p->GetName().c_str());
-
-    // problem arises if we need to call the player function as an entit
-    Entity* entity = p;
-    log.Info(entity->GetName().c_str()); // we excpect this to print the name of the player since a player is an entity but we are requesting for the name of the player but..
-    // instead we get "Entity" printed. this is causewhen calling the method it calls the methos of the clas of whatever the type is
-    // to fix this use virtual functions. trying this again after adding the virtual keyword we get correct
+    log.Info(p->GetClassName().c_str());
 
     std::cin.get();
-
-    delete e;
+    
     delete p;
-    delete entity;
 }
