@@ -62,7 +62,7 @@ public:
     Player(const std::string& name)
         : m_Name(name) {}
 
-    std::string GetName() { return m_Name; }
+    std::string GetName() override { return m_Name; }
 
     void PrintName() {
         Log log;
