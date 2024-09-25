@@ -1,31 +1,72 @@
-#### Playlist Management System
+# Infix to Postfix Conversion and Evaluation
 
-**Description:**
-This is a simple playlist management system implemented in C++ using a Doubly Linked List (DLL). Each song in the playlist is represented by a node containing the song ID, title, and artist. The system allows users to perform the following operations:
+## Overview
 
-- **Add a Song:** Insert a new song at the end of the playlist.
-- **Remove a Song:** Delete a song by providing its unique ID.
-- **Display Playlist:** Show all songs in the playlist in forward order.
-- **Display Reverse Playlist:** Show all songs in reverse order.
-- **Search Song:** Find a song by its unique ID.
+This program converts an infix expression to a postfix expression using a stack and evaluates the postfix result. It supports basic arithmetic operations and functions like `log`, `sin`, and `cos`. The program also checks for invalid expressions with incorrect operator sequences.
 
-**Features:**
+## Features
 
-- **Doubly Linked List:** Allows efficient traversal in both directions.
-- **Memory Management:** Ensures proper allocation and deallocation of memory when adding or removing songs.
-- **Menu-Driven Interface:** The user is prompted with options to interact with the playlist.
+- Converts complex infix expressions to postfix notation.
+- Evaluates both infix and postfix expressions to provide the final result.
+- Handles mathematical functions such as logarithms and trigonometric functions.
+- Validates input expressions to prevent errors due to invalid operators.
+- User-friendly interface with clear error messages for invalid inputs.
 
-**How It Works:**
-1. **Add Song:** When a new song is added, it's inserted at the end of the doubly linked list.
-2. **Remove Song:** The system searches for the song by its ID, and removes it from the appropriate position (beginning, middle, or end) in the list.
-3. **Display Playlist:** Traverses the playlist from the head to the tail, showing song details.
-4. **Reverse Display:** Traverses the playlist from the tail to the head, showing song details in reverse.
-5. **Search Song:** Searches through the playlist to find a song by its ID.
+## Approach
 
-**Usage:**
-Compile and run the program using any C++ compiler. The user will be presented with a menu to add, remove, display, and search for songs in the playlist.
+### Infix to Postfix Conversion
 
-#### Files:
-- `playlist.cpp`: The main source file containing the Playlist Management System implementation.
-- `README.md`: This file, describing the system, its features, and usage instructions.
+1. **Scan the Infix Expression**: Each character is processed one at a time.
+2. **Operands**: Directly add operands (numbers, variables) to the postfix output.
+3. **Operators**: Use a stack to manage operators. Operators are pushed to the stack based on their precedence, and higher precedence operators are popped before pushing a lower precedence operator.
+4. **Parentheses**: Handle parentheses by pushing opening brackets and popping until matching closing brackets are found.
+5. **Functions**: Mathematical functions like `log`, `sin`, and `cos` are treated as operators with high precedence.
+6. **Final Pop**: After scanning, any remaining operators are popped to the postfix expression.
 
+### Postfix Evaluation
+
+1. **Scan the Postfix Expression**: Each token is processed sequentially.
+2. **Operands**: Push operands (numbers) onto a stack.
+3. **Operators**: Pop two operands, apply the operator, and push the result back on the stack.
+4. **Result**: The final result is the remaining value on the stack.
+
+## Example Usage
+
+```plaintext
+Enter infix expression: (3+4)*2/2+4/2*8
+Postfix expression: 3 4 + 2 * 2 / 4 2 / 8 * +
+Result Postfix Expression: 23
+```
+
+## Error Handling
+
+- The program checks for invalid sequences such as `++`, `--`, `//`, etc.
+- Division by zero is explicitly handled and will generate an appropriate error message.
+- Invalid or unsupported mathematical functions will also trigger an error.
+
+## Requirements
+
+- C++11 or higher.
+- Standard library support for `<iostream>`, `<stack>`, `<string>`, `<cmath>`, and `<stdexcept>`.
+
+## Compilation
+
+Compile the program using a C++ compiler:
+
+```bash
+g++ infix_to_postfix.cpp -o infix_to_postfix -std=c++11
+```
+
+Run the executable:
+
+```bash
+./infix_to_postfix
+```
+
+## Authors
+
+- Valiantlynx
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
