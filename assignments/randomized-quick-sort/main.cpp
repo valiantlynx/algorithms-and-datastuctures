@@ -38,6 +38,32 @@ void randomizedQuickSort(vector<T> &arr, int low, int high) {
     }
 }
 
+// Normal Quick Sort
+// This function sorts the array using the classic Quick Sort algorithm
+template <typename T>
+int normalPartition(vector<T> &arr, int low, int high) {
+    T pivot = arr[high];
+    int i = low - 1;
+
+    for (int j = low; j < high; ++j) {
+        if (arr[j] <= pivot) {
+            ++i;
+            swap(arr[i], arr[j]);
+        }
+    }
+    swap(arr[i + 1], arr[high]);
+    return i + 1;
+}
+
+template <typename T>
+void normalQuickSort(vector<T> &arr, int low, int high) {
+    if (low < high) {
+        int pivotIndex = normalPartition(arr, low, high);
+        normalQuickSort(arr, low, pivotIndex - 1);
+        normalQuickSort(arr, pivotIndex + 1, high);
+    }
+}
+
 // Merge Sort
 // This function merges two sorted halves of the array
 template <typename T>
@@ -73,7 +99,7 @@ void mergeSort(vector<T> &arr, int lb, int ub) {
     }
 }
 
-// Function foo handle user input and perform sorting
+// Function to handle user input and perform sorting
 template <typename T>
 void sortArray() {
     int n;
@@ -90,7 +116,8 @@ void sortArray() {
         cin >> arr[i];
     }
 
-    vector<T> arrCopy = arr; // Create a copy of the array for Merge Sort comparison
+    vector<T> arrCopy1 = arr; // Create a copy of the array for Merge Sort comparison
+    vector<T> arrCopy2 = arr; // Create a copy of the array for Normal Quick Sort comparison
 
     // Measure Randomized Quick Sort time
     auto start = chrono::high_resolution_clock::now();
@@ -108,21 +135,35 @@ void sortArray() {
 
     // Measure Merge Sort time
     start = chrono::high_resolution_clock::now();
-    mergeSort(arrCopy, 0, n - 1);
+    mergeSort(arrCopy1, 0, n - 1);
     end = chrono::high_resolution_clock::now();
     auto mergeSortDuration = chrono::duration_cast<chrono::microseconds>(end - start).count();
 
     // Output the sorted array using Merge Sort
     cout << "The sorted array using Merge Sort is: " << endl;
-    for (const auto &element : arrCopy) {
+    for (const auto &element : arrCopy1) {
         cout << element << " ";
     }
     cout << endl;
     cout << "Time taken by Merge Sort: " << mergeSortDuration << " microseconds" << endl;
+
+    // Measure Normal Quick Sort time
+    start = chrono::high_resolution_clock::now();
+    normalQuickSort(arrCopy2, 0, n - 1);
+    end = chrono::high_resolution_clock::now();
+    auto normalQuickSortDuration = chrono::duration_cast<chrono::microseconds>(end - start).count();
+
+    // Output the sorted array using Normal Quick Sort
+    cout << "The sorted array using Normal Quick Sort is: " << endl;
+    for (const auto &element : arrCopy2) {
+        cout << element << " ";
+    }
+    cout << endl;
+    cout << "Time taken by Normal Quick Sort: " << normalQuickSortDuration << " microseconds" << endl;
 }
 
 int main() {
-    srand(time(0)); // Seed the random number generator 
+    srand(time(0)); // Seed the random number generator
 
     char type;
     cout << "Enter 'i' for integers or 'f' for floating-point numbers: ";
