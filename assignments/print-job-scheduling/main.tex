@@ -1,0 +1,122 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{hyperref}
+\usepackage{geometry}
+\geometry{a4paper, margin=1in}
+\usepackage{xcolor}
+
+\lstset{
+    language=C++,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue},
+    stringstyle=\color{red},
+    commentstyle=\color{green},
+    breaklines=true,
+    frame=single,
+    showstringspaces=false,
+}
+
+\title{Print Job Scheduling with Priority Queue Using Max-Heap}
+\author{Gormery K. Wanjiru}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+In this assignment, we explore the concept of print job scheduling using a priority queue based on a max-heap. The goal is to develop a program that allows users to add print jobs with different priorities and efficiently process them according to their priority, with higher-priority jobs processed before lower-priority ones. This system is intended to demonstrate the application of max-heap in real-world scenarios where tasks require prioritization.
+
+\section{System Design}
+The system is built around three main tasks:
+\begin{enumerate}
+    \item \textbf{Task 1: Priority Queue Design} - Implement a priority queue using a max-heap to manage print jobs by priority.
+    \item \textbf{Task 2: Job Addition and Display} - Enable users to add print jobs with a user-friendly interface and automatically display the highest-priority job after each insertion.
+    \item \textbf{Task 3: Priority Update} - Allow users to update the priority of an existing job and reposition it within the max-heap.
+\end{enumerate}
+
+\section{Algorithm Details}
+
+\subsection{Max-Heap Priority Queue for Print Job Scheduling}
+The max-heap structure allows efficient management of insertion and extraction operations based on priority. Each print job has a unique name and an integer priority, with higher integers indicating higher priority. The max-heap properties are maintained during insertion and after updating priorities.
+
+\subsection{Task Breakdown}
+\begin{itemize}
+    \item \textbf{Task 1} - Design the max-heap structure for print job scheduling and ensure that higher-priority jobs are processed before lower-priority jobs. Handle invalid inputs gracefully.
+    \item \textbf{Task 2} - Implement a user interface for job insertion, displaying the job with the highest priority after each addition. Prevent duplicate job names.
+    \item \textbf{Task 3} - Add functionality to update a job's priority, repositioning it in the max-heap based on the new priority.
+\end{itemize}
+
+\section{Implementation}
+The code below illustrates the main components of the priority queue using a max-heap and its associated methods.
+
+\begin{lstlisting}
+// Priority Queue Implementation
+#include <iostream>
+#include <vector>
+#include <string>
+#include <unordered_map>
+
+struct PrintJob {
+    std::string name;
+    int priority;
+    PrintJob(const std::string& name, int priority) : name(name), priority(priority) {}
+};
+
+class PriorityQueue {
+private:
+    std::vector<PrintJob> heap;
+    std::unordered_map<std::string, int> jobMap;
+
+    void heapifyUp(int index);
+    void heapifyDown(int index);
+public:
+    void insertJob(const std::string& name, int priority);
+    void processJob();
+    void updatePriority(const std::string& name, int newPriority);
+    void displayHighestPriorityJob();
+    void displayQueue();
+};
+\end{lstlisting}
+
+\section{Example Usage}
+The following input sequence demonstrates adding, displaying, and processing jobs in the queue:
+
+\begin{verbatim}
+Insert Print Job:
+Job Name: "Thesis", Priority: 4
+Queue: ["Thesis"] | Highest priority: Thesis (Priority: 4)
+
+Insert Print Job:
+Job Name: "Project", Priority: 5
+Queue: ["Project", "Thesis"] | Highest priority: Project (Priority: 5)
+
+Update Job Priority:
+Update "Thesis" to Priority 7
+Queue: ["Thesis", "Project"] | Highest priority: Thesis (Priority: 7)
+\end{verbatim}
+
+\section{Error Handling and Edge Cases}
+The system includes error handling for:
+\begin{itemize}
+    \item Duplicate job names.
+    \item Invalid priority values.
+    \item Attempting to update non-existent jobs.
+\end{itemize}
+
+\section{Testing and Results}
+Each feature was tested individually and in sequence, following the example input to ensure correctness. The results match the expected output for each task, confirming the priority queue's effective scheduling.
+
+\section{Conclusion}
+This project demonstrates the use of a max-heap-based priority queue for efficiently managing and scheduling tasks. By supporting dynamic priority updates and job insertion, the program provides a foundational example of priority-based task scheduling in C++.
+
+\section*{References}
+\begin{itemize}
+    \item Cormen, T. H., et al. (2009). \textit{Introduction to Algorithms}, 3rd ed. MIT Press.
+    \item Sedgewick, R. (2011). \textit{Algorithms in C++}. Addison-Wesley.
+    \item Documentation: \url{https://en.cppreference.com/}
+\end{itemize}
+
+\end{document}

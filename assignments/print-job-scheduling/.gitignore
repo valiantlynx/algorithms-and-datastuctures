@@ -1,0 +1,9 @@
+output/
+__pycache__/
+*zip
+*.aux
+*.fls
+*.fdb_latexmk
+*.log
+*.synctex.gz
+*.out
