@@ -27,30 +27,20 @@
 \maketitle
 
 \section{Introduction}
-In this assignment, we explore the concept of print job scheduling using a priority queue based on a max-heap. The goal is to develop a program that allows users to add print jobs with different priorities and efficiently process them according to their priority, with higher-priority jobs processed before lower-priority ones. This system is intended to demonstrate the application of max-heap in real-world scenarios where tasks require prioritization.
+This project implements a print job scheduling system using a priority queue based on a max-heap in C++. The system allows users to add print jobs with different priorities and processes them in descending order of priority. The project demonstrates the application of a max-heap for task prioritization and includes structured test outputs to verify functionality.
 
 \section{System Design}
-The system is built around three main tasks:
+This system following the assignment is broken down into three core tasks:
 \begin{enumerate}
-    \item \textbf{Task 1: Priority Queue Design} - Implement a priority queue using a max-heap to manage print jobs by priority.
-    \item \textbf{Task 2: Job Addition and Display} - Enable users to add print jobs with a user-friendly interface and automatically display the highest-priority job after each insertion.
-    \item \textbf{Task 3: Priority Update} - Allow users to update the priority of an existing job and reposition it within the max-heap.
+    \item \textbf{Task 1: Priority Queue Implementation} - Develop a max-heap-based priority queue to manage and process print jobs by priority.
+    \item \textbf{Task 2: Job Addition and Display} - Create a user interface for job addition that displays the job with the highest priority after each addition.
+    \item \textbf{Task 3: Priority Update} - Enable priority updates for existing jobs, and reordering them within the max-heap as needed.
 \end{enumerate}
 
-\section{Algorithm Details}
+\section{Algorithm and Implementation Details}
 
-\subsection{Max-Heap Priority Queue for Print Job Scheduling}
-The max-heap structure allows efficient management of insertion and extraction operations based on priority. Each print job has a unique name and an integer priority, with higher integers indicating higher priority. The max-heap properties are maintained during insertion and after updating priorities.
-
-\subsection{Task Breakdown}
-\begin{itemize}
-    \item \textbf{Task 1} - Design the max-heap structure for print job scheduling and ensure that higher-priority jobs are processed before lower-priority jobs. Handle invalid inputs gracefully.
-    \item \textbf{Task 2} - Implement a user interface for job insertion, displaying the job with the highest priority after each addition. Prevent duplicate job names.
-    \item \textbf{Task 3} - Add functionality to update a job's priority, repositioning it in the max-heap based on the new priority.
-\end{itemize}
-
-\section{Implementation}
-The code below illustrates the main components of the priority queue using a max-heap and its associated methods.
+\subsection{Max-Heap Priority Queue}
+The max-heap data structure ensures that higher-priority print jobs (higher integer values) are processed before lower-priority ones. The program includes methods for inserting jobs, updating job priority, and processing jobs based on priority, with some  internal functions to maintain heap properties after every operation.
 
 \begin{lstlisting}
 // Priority Queue Implementation
@@ -68,11 +58,13 @@ struct PrintJob {
 class PriorityQueue {
 private:
     std::vector<PrintJob> heap;
-    std::unordered_map<std::string, int> jobMap;
+    std::unordered_map<std::string, int> jobMap; // Map for quick job lookup
+    bool verbose; // Flag for output control in testing
 
     void heapifyUp(int index);
     void heapifyDown(int index);
 public:
+    PriorityQueue(bool verbose = true) : verbose(verbose) {}
     void insertJob(const std::string& name, int priority);
     void processJob();
     void updatePriority(const std::string& name, int newPriority);
@@ -81,42 +73,95 @@ public:
 };
 \end{lstlisting}
 
-\section{Example Usage}
-The following input sequence demonstrates adding, displaying, and processing jobs in the queue:
+\subsection{Testing Sequence}
+The testing sequence follows the specified scenario we got in the assignment. it also just captures the output at each step to verify correct functionality. 
 
 \begin{verbatim}
-Insert Print Job:
-Job Name: "Thesis", Priority: 4
-Queue: ["Thesis"] | Highest priority: Thesis (Priority: 4)
+Step 1: Insert "Thesis" with Priority 4
+Expected: Next job: Thesis (Priority: 4)
+Actual: Next job: Thesis (Priority: 4)
+Result: PASS
 
-Insert Print Job:
-Job Name: "Project", Priority: 5
-Queue: ["Project", "Thesis"] | Highest priority: Project (Priority: 5)
+Step 2: Insert "Project" with Priority 5
+Expected: Next job: Project (Priority: 5)
+Actual: Next job: Project (Priority: 5)
+Result: PASS
 
-Update Job Priority:
-Update "Thesis" to Priority 7
-Queue: ["Thesis", "Project"] | Highest priority: Thesis (Priority: 7)
+Step 3: Insert "Report" with Priority 3
+Expected: Next job: Project (Priority: 5)
+Actual: Next job: Project (Priority: 5)
+Result: PASS
+
+Step 4: Insert "Assignment" with Priority 2
+Expected: Next job: Project (Priority: 5)
+Actual: Next job: Project (Priority: 5)
+Result: PASS
+
+Step 5: Display Highest Priority Job
+Expected: Next job: Project (Priority: 5)
+Actual: Next job: Project (Priority: 5)
+Result: PASS
+
+Step 6: Process Job with Highest Priority
+Expected: Processing: Project (Priority: 5)
+Actual: Processing: Project (Priority: 5)
+Result: PASS
+
+Step 7: Insert "Invoice" with Priority 6
+Expected: Next job: Invoice (Priority: 6)
+Actual: Next job: Invoice (Priority: 6)
+Result: PASS
+
+Step 8: Update "Thesis" Priority to 7
+Expected: Updated Thesis to priority 7
+Actual: Updated Thesis to priority 7
+Result: PASS
 \end{verbatim}
 
-\section{Error Handling and Edge Cases}
-The system includes error handling for:
-\begin{itemize}
-    \item Duplicate job names.
-    \item Invalid priority values.
-    \item Attempting to update non-existent jobs.
-\end{itemize}
+\section{Testing Code}
+Below is the code for testing for the output above, which automates each step and validates expected outcomes. The function \texttt{printTestResult} compares captured output to expected results and displays pass/fail status.
 
-\section{Testing and Results}
-Each feature was tested individually and in sequence, following the example input to ensure correctness. The results match the expected output for each task, confirming the priority queue's effective scheduling.
+\begin{lstlisting}
+// Helper function to capture output of specific actions
+std::string captureOutput(std::function<void()> func) {
+    std::ostringstream buffer;
+    std::streambuf* old = std::cout.rdbuf(buffer.rdbuf());
+    func();
+    std::cout.rdbuf(old);
+    return buffer.str();
+}
 
-\section{Conclusion}
-This project demonstrates the use of a max-heap-based priority queue for efficiently managing and scheduling tasks. By supporting dynamic priority updates and job insertion, the program provides a foundational example of priority-based task scheduling in C++.
+// Helper function to print test results
+void printTestResult(const std::string& testDescription, const std::string& actualOutput,
+                     const std::string& expectedOutput, bool condition) {
+    std::cout << "Test: " << testDescription << "\n";
+    std::cout << "Expected: " << expectedOutput << "\n";
+    std::cout << "Actual: " << actualOutput << "\n";
+    std::cout << (condition ? "Result: PASS" : "Result: FAIL") << "\n\n";
+}
 
-\section*{References}
-\begin{itemize}
-    \item Cormen, T. H., et al. (2009). \textit{Introduction to Algorithms}, 3rd ed. MIT Press.
-    \item Sedgewick, R. (2011). \textit{Algorithms in C++}. Addison-Wesley.
-    \item Documentation: \url{https://en.cppreference.com/}
-\end{itemize}
+// Function to perform the example test sequence
+void runExampleTest() {
+    PriorityQueue queue;
+    bool condition;
+    std::string output;
+
+    // Test Steps
+    output = captureOutput([&]() { queue.insertJob("Thesis", 4); });
+    condition = (output.find("Next job: Thesis (Priority: 4)") != std::string::npos);
+    printTestResult("Insert 'Thesis' with priority 4", output, "Next job: Thesis (Priority: 4)", condition);
+
+    output = captureOutput([&]() { queue.insertJob("Project", 5); });
+    condition = (output.find("Next job: Project (Priority: 5)") != std::string::npos);
+    printTestResult("Insert 'Project' with priority 5", output, "Next job: Project (Priority: 5)", condition);
+
+    // Additional steps continue...
+}
+
+int main() {
+    runExampleTest();
+    return 0;
+}
+\end{lstlisting}
 
 \end{document}
