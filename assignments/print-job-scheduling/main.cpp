@@ -120,19 +120,57 @@ public:
     }
 };
 
+// Main user interface
+void showMenu() {
+    std::cout << "\nSelect an option:\n";
+    std::cout << "1. Add a Print Job\n";
+    std::cout << "2. Process the Highest Priority Job\n";
+    std::cout << "3. Update Print Job Priority\n";
+    std::cout << "4. Display All Jobs\n";
+    std::cout << "5. Exit\n";
+    std::cout << "Enter your choice: ";
+}
+
 int main() {
     PriorityQueue queue;
+    int choice;
 
-    queue.insertJob("Thesis", 4);
-    queue.insertJob("Project", 5);
-    queue.insertJob("Report", 3);
-    queue.insertJob("Assignment", 2);
-
-    queue.displayHighestPriorityJob();
-    queue.processJob();
-
-    queue.insertJob("Invoice", 6);
-    queue.updatePriority("Thesis", 7);
-
+    while (true) {
+        showMenu();
+        std::cin >> choice;
+        std::cin.ignore(); // Ignore newline character for string input
+        
+        if (choice == 1) {
+            std::string name;
+            int priority;
+            std::cout << "Enter job name: ";
+            std::getline(std::cin, name);
+            std::cout << "Enter job priority: ";
+            std::cin >> priority;
+            queue.insertJob(name, priority);
+        } 
+        else if (choice == 2) {
+            queue.processJob();
+        } 
+        else if (choice == 3) {
+            std::string name;
+            int newPriority;
+            std::cout << "Enter job name to update: ";
+            std::getline(std::cin, name);
+            std::cout << "Enter new priority: ";
+            std::cin >> newPriority;
+            queue.updatePriority(name, newPriority);
+        } 
+        else if (choice == 4) {
+            queue.displayQueue();
+        } 
+        else if (choice == 5) {
+            std::cout << "Exiting...\n";
+            break;
+        } 
+        else {
+            std::cout << "Invalid choice. Please try again.\n";
+        }
+    }
     return 0;
 }
