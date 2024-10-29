@@ -15,6 +15,7 @@ class PriorityQueue {
 private:
     std::vector<PrintJob> heap;
     std::unordered_map<std::string, int> jobMap; // Map for quick job lookup
+    bool verbose; // Flag for controlling output verbosity. mainly used in testing
 
     // Move the element at some 'index' up to restore max-heap order
     void heapifyUp(int index) {
@@ -58,6 +59,8 @@ private:
     }
 
 public:
+    PriorityQueue(bool verbose = true) : verbose(verbose) {} 
+
     // Insert a new job, error checksthat there are no duplicate names
     void insertJob(const std::string& name, int priority) {
         if (jobMap.count(name)) {
@@ -70,7 +73,7 @@ public:
         int index = heap.size() - 1;
         jobMap[name] = index;
         heapifyUp(index);
-        displayHighestPriorityJob();
+        if (verbose) displayHighestPriorityJob();
     }
 
     // Process the highest priority job
@@ -97,7 +100,7 @@ public:
     // Update the priority of an existing job and reposition it
     void updatePriority(const std::string& name, int newPriority) {
         if (!jobMap.count(name)) {
-            std::cout << "Error: Job with the name '" << name << "' does not exist.\n";
+            if (verbose) std::cout << "Error: Job with the name '" << name << "' does not exist.\n";
             return;
         }
 
@@ -112,26 +115,46 @@ public:
             heapifyDown(index);
         }
 
-        std::cout << "Updated " << name << " to priority " << newPriority << ".\n";
-        displayQueue();
+        if (verbose) {
+            std::cout << "Updated " << name << " to priority " << newPriority << ".\n";
+            displayQueue();
+        }
     }
 
     // Display the job with the highest priority, no processing
     void displayHighestPriorityJob() {
-        if (!heap.empty()) {
-            std::cout << "Next job: " << heap[0].name << " (Priority: " << heap[0].priority << ")\n";
-        } else {
-            std::cout << "No jobs in the queue.\n";
-        }
-    }
+        if (verbose) {
+            if (!heap.empty()) {
+                std::cout << "Next job: " << heap[0].name << " (Priority: " << heap[0].priority << ")\n";
+            } else {
+                std::cout << "No jobs in the queue.\n";
+            }
+    }   }
 
     // Display all jobs in the queue
     void displayQueue() {
-        std::cout << "Queue contains: ";
-        for (const auto& job : heap) {
-            std::cout << "[" << job.name << " (Priority: " << job.priority << ")] ";
-        }
-        std::cout << "\n";
+        if (verbose) {
+            std::cout << "Queue contains: ";
+            for (const auto& job : heap) {
+                std::cout << "[" << job.name << " (Priority: " << job.priority << ")] ";
+            }
+            std::cout << "\n";
+    }   }
+
+        // For testing only: Get the current size of the heap
+    int getSize() const {
+        return heap.size();
+    }
+
+    // For testing only: Get the name and priority of the top job
+    PrintJob getTopJob() const {
+        if (!heap.empty()) return heap[0];
+        throw std::runtime_error("Heap is empty");
+    }
+
+    // For testing only: Check if the queue is empty
+    bool isEmpty() const {
+        return heap.empty();
     }
 };
 
@@ -146,6 +169,8 @@ void showMenu() {
     std::cout << "Enter your choice: ";
 }
 
+
+#ifndef TESTING
 int main() {
     PriorityQueue queue;
     int choice;
@@ -189,3 +214,4 @@ int main() {
     }
     return 0;
 }
+#endif
