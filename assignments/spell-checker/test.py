@@ -3,7 +3,7 @@ import subprocess
 def run_spellchecker_test(word, expected_output):
     process = subprocess.Popen(["./spellchecker.exe"], stdin=subprocess.PIPE, stdout=subprocess.PIPE, text=True)
     out, _ = process.communicate(input=f"{word}\nexit\n")
-    actual_output = out.splitlines()[0]  # Grabbing the result line after input prompt
+    actual_output = out.splitlines()[0]  # Grabbing the result 
     result = "PASS" if actual_output.strip() == expected_output.strip() else "FAIL"
     print(f"Test: {word}\nExpected: {expected_output}\nActual: {actual_output}\nResult: {result}\n")
 
