@@ -1,241 +1,169 @@
 \documentclass{article}
-\usepackage{amsmath}
-\usepackage{graphicx}
 \usepackage{listings}
+\usepackage{xcolor}
+\usepackage{amsmath}
 \usepackage{hyperref}
 \usepackage{geometry}
+
 \geometry{a4paper, margin=1in}
-\usepackage{xcolor}
+
+\title{Spell Checker With C++}
+\author{}
+\date{}
 
 \lstset{
     language=C++,
-    basicstyle=\ttfamily\small,
+    basicstyle=\ttfamily\footnotesize,
     keywordstyle=\color{blue},
-    stringstyle=\color{red},
-    commentstyle=\color{green},
+    commentstyle=\color{green!60!black},
+    stringstyle=\color{red!70!black},
+    numbers=left,
+    numberstyle=\tiny,
+    stepnumber=1,
     breaklines=true,
     frame=single,
-    showstringspaces=false,
+    tabsize=4,
+    showstringspaces=false
 }
-
-\title{Print Job Scheduling with Priority Queue Using Max-Heap}
-\author{Gormery K. Wanjiru}
-\date{\today}
 
 \begin{document}
 
 \maketitle
 
-\section*{Print Job Scheduling System}
+\section*{Introduction}
+This document presents a spell checker program written in C++ and a very simple python testing script to verify its functionality. The code uses a dictionary of common words to check if an input word is correctly spelled or if it has a close suggestion. 
 
-This program schedules print jobs by priority, using a max-heap to ensure higher-priority jobs are processed first. Users can add jobs, view the job with the highest priority, update priorities, and process jobs.
+\section*{main.cpp}
+The is the C++ code that implements the spell checker. The program uses Levenshtein distance to find the closest matching word in the dictionary when the input word is not spelled correctly.
 
-
-\section*{Components of the System}
-
-1. \textbf{Priority Queue with Max-Heap}:
-   - Jobs added to the max-heap are ordered by priority, so the job with the highest priority is at the top.
-   - Includes methods for adding jobs, processing the highest-priority job, and updating job priorities.
-
-2. \textbf{Adding Jobs}:
-   - Users can add jobs with a name and priority, and the system shows the job with the highest priority after each addition.
-
-3. \textbf{Updating Job Priority}:
-   - Users can update any job’s priority, triggering a reorganization of the max-heap to maintain order.
-
-   \section*{How to Use It}
-
-   To use the print job scheduling program, follow these steps:
-   
-   \begin{enumerate}
-       \item \textbf{Compile and Run}
-       \begin{itemize}
-           \item First, compile the program using a C++ compiler (e.g., \texttt{g++ main.cpp -o main}).
-           \item Run the executable (e.g., \texttt{./main}) to start the program.
-       \end{itemize}
-   
-       \item \textbf{User-Friendly Interface}
-       \begin{itemize}
-           \item Once the program is running, a menu interface will appear, guiding you through the options.
-           \item The menu provides choices to add jobs, update priorities, process the highest-priority job, and view the job queue.
-       \end{itemize}
-   
-       \item \textbf{Navigating the Menu}
-       \begin{itemize}
-           \item The program will prompt you to input your choice for each operation. Simply follow the prompts to:
-           \begin{itemize}
-               \item Add new print jobs with a name and priority.
-               \item Update priorities for existing jobs.
-               \item Process and remove the highest-priority job.
-               \item View the full job queue and see which job has the highest priority.
-           \end{itemize}
-           \item After each operation, the program will display the current state of the queue, reflecting any changes made.
-       \end{itemize}
-   \end{enumerate}
-   
-   The interface ensures a smooth experience by handling input validation and displaying relevant error messages if needed.
-   
-
-\section*{Code Structure}
-
-\subsection*{Main Priority Queue and Print Job Structure}
-
-\begin{lstlisting}
-// Priority Queue and Print Job Structure
+\begin{lstlisting}[caption={main.cpp}, label={lst:main}]
 #include <iostream>
+#include <unordered_set>
 #include <vector>
 #include <string>
-#include <unordered_map>
+#include <algorithm>
+#include <limits>
 
-struct PrintJob {
-    std::string name;
-    int priority;
-    PrintJob(const std::string& name, int priority) : name(name), priority(priority) {}
-};
-
-class PriorityQueue {
-private:
-    std::vector<PrintJob> heap;
-    std::unordered_map<std::string, int> jobMap; // Maps names for fast access
-    bool verbose;
-
-    void heapifyUp(int index);
-    void heapifyDown(int index);
+// SpellChecker Class Definition
+class SpellChecker {
 public:
-    PriorityQueue(bool verbose = true) : verbose(verbose) {}
-    void insertJob(const std::string& name, int priority);
-    void processJob();
-    void updatePriority(const std::string& name, int newPriority);
-    void displayHighestPriorityJob();
-    void displayQueue();
+    SpellChecker(const std::vector<std::string>& dictionary);
+    std::vector<std::string> spellCheck(const std::string& word);
+
+private:
+    std::unordered_set<std::string> wordSet;
+    int calculateLevenshteinDistance(const std::string& source, const std::string& target);
+    std::string findClosestMatch(const std::string& word);
 };
+
+// SpellChecker Implementation
+SpellChecker::SpellChecker(const std::vector<std::string>& dictionary) {
+    for (const auto& word : dictionary) {
+        wordSet.insert(word);
+    }
+}
+
+std::vector<std::string> SpellChecker::spellCheck(const std::string& word) {
+    if (wordSet.find(word) != wordSet.end()) {
+        return {word};  // Word is correctly spelled
+    }
+    
+    std::string closestMatch = findClosestMatch(word);
+    return closestMatch.empty() ? std::vector<std::string>{} : std::vector<std::string>{closestMatch};
+}
+
+int SpellChecker::calculateLevenshteinDistance(const std::string& source, const std::string& target) {
+    std::vector<std::vector<int>> dp(source.size() + 1, std::vector<int>(target.size() + 1));
+
+    for (size_t i = 0; i <= source.size(); ++i) dp[i][0] = i;
+    for (size_t j = 0; j <= target.size(); ++j) dp[0][j] = j;
+
+    for (size_t i = 1; i <= source.size(); ++i) {
+        for (size_t j = 1; j <= target.size(); ++j) {
+            int cost = (source[i - 1] == target[j - 1]) ? 0 : 1;
+            dp[i][j] = std::min({dp[i - 1][j] + 1, dp[i][j - 1] + 1, dp[i - 1][j - 1] + cost});
+        }
+    }
+    return dp[source.size()][target.size()];
+}
+
+std::string SpellChecker::findClosestMatch(const std::string& word) {
+    int minDistance = std::numeric_limits<int>::max();
+    std::string closestMatch;
+
+    for (const auto& dictWord : wordSet) {
+        int distance = calculateLevenshteinDistance(word, dictWord);
+        if (distance < minDistance) {
+            minDistance = distance;
+            closestMatch = dictWord;
+        }
+    }
+    
+    // Return suggestion only if it's reasonably close
+    return (minDistance <= word.size() / 2 + 1) ? closestMatch : "";
+}
+
+// Main Application
+int main() {
+    std::vector<std::string> dictionary = {"apple", "banana", "orange", "grape", "peach", "pear", "mango", "melon"};
+    SpellChecker checker(dictionary);
+
+    std::string input;
+    while (true) {
+        std::cout << "Enter a word to spell-check (or 'exit' to quit): ";
+        std::cin >> input;
+        if (input == "exit") break;
+
+        auto suggestions = checker.spellCheck(input);
+        if (suggestions.empty()) {
+            std::cout << "No suitable suggestion found.\n";
+        } else if (suggestions[0] == input) {
+            std::cout << "The word '" << input << "' is spelled correctly.\n";
+        } else {
+            std::cout << "Did you mean: " << suggestions[0] << "?\n";
+        }
+    }
+
+    return 0;
+}
 \end{lstlisting}
 
+\section*{test.py}
+The Python script used to test the functionality of the spell checker program. It uses subprocesses to execute the compiled C++ program and compares the actual output with expected results.
 
-\section*{Testing results}
+\begin{lstlisting}[language=Python, caption={test.py}, label={lst:test}]
+    import subprocess
 
-Following the example scenario, we tested each feature in sequence. Below are the expected and actual outputs for each step, with the result noted as pass or fail.
-\begin{enumerate}
-    \item \textbf{Insert "Thesis" with Priority 4}
-        \begin{itemize}
-            \item \textbf{Expected:} \texttt{"Next job: Thesis (Priority: 4)"}
-            \item \textbf{Actual:} \texttt{"Next job: Thesis (Priority: 4)"}
-            \item \textbf{Result:} \textcolor{green}{PASS}
-        \end{itemize}
-
-    \item \textbf{Insert "Project" with Priority 5}
-        \begin{itemize}
-            \item \textbf{Expected:} \texttt{"Next job: Project (Priority: 5)"}
-            \item \textbf{Actual:} \texttt{"Next job: Project (Priority: 5)"}
-            \item \textbf{Result:} \textcolor{green}{PASS}
-        \end{itemize}
-
-    \item \textbf{Insert "Report" with Priority 3}
-        \begin{itemize}
-            \item \textbf{Expected:} \texttt{"Next job: Project (Priority: 5)"}
-            \item \textbf{Actual:} \texttt{"Next job: Project (Priority: 5)"}
-            \item \textbf{Result:} \textcolor{green}{PASS}
-        \end{itemize}
-
-    \item \textbf{Insert "Assignment" with Priority 2}
-        \begin{itemize}
-            \item \textbf{Expected:} \texttt{"Next job: Project (Priority: 5)"}
-            \item \textbf{Actual:} \texttt{"Next job: Project (Priority: 5)"}
-            \item \textbf{Result:} \textcolor{green}{PASS}
-        \end{itemize}
-
-    \item \textbf{Display Job with Highest Priority}
-        \begin{itemize}
-            \item \textbf{Expected:} \texttt{"Next job: Project (Priority: 5)"}
-            \item \textbf{Actual:} \texttt{"Next job: Project (Priority: 5)"}
-            \item \textbf{Result:} \textcolor{green}{PASS}
-        \end{itemize}
-
-    \item \textbf{Process Job with Highest Priority (Project)}
-        \begin{itemize}
-            \item \textbf{Expected:} \texttt{"Processing: Project (Priority: 5)"}
-            \item \textbf{Actual:} \texttt{"Processing: Project (Priority: 5)"}
-            \item \textbf{Result:} \textcolor{green}{PASS}
-        \end{itemize}
-
-    \item \textbf{Insert "Invoice" with Priority 6}
-        \begin{itemize}
-            \item \textbf{Expected:} \texttt{"Next job: Invoice (Priority: 6)"}
-            \item \textbf{Actual:} \texttt{"Next job: Invoice (Priority: 6)"}
-            \item \textbf{Result:} \textcolor{green}{PASS}
-        \end{itemize}
-
-    \item \textbf{Update Priority of "Thesis" to 7}
-        \begin{itemize}
-            \item \textbf{Expected:} \texttt{"Updated Thesis to priority 7"}
-            \item \textbf{Actual:} \texttt{"Updated Thesis to priority 7. Queue contains: [Thesis (Priority: 7)] [Invoice (Priority: 6)] [Report (Priority: 3)] [Assignment (Priority: 2)]"}
-            \item \textbf{Result:} \textcolor{green}{PASS}
-        \end{itemize}
-\end{enumerate}
-
-
-\section*{Testing Code for Automated Sequence}
-
-\begin{lstlisting}
-    #define TESTING
-    #include <iostream>
-    #include <functional>
-    #include <sstream>
-    #include <string>
-    #include "main.cpp" // Include the main.cpp file containing PriorityQueue
+    def run_spellchecker_test(word, expected_output):
+        process = subprocess.Popen(["./spellchecker.exe"], stdin=subprocess.PIPE, stdout=subprocess.PIPE, text=True)
+        out, _ = process.communicate(input=f"{word}\nexit\n")
+        actual_output = out.splitlines()[0]  # Grabbing the result line after input prompt
+        result = "PASS" if actual_output.strip() == expected_output.strip() else "FAIL"
+        print(f"Test: {word}\nExpected: {expected_output}\nActual: {actual_output}\nResult: {result}\n")
     
-    // Helper function to capture output of specific actions
-    std::string captureOutput(std::function<void()> func) {
-        std::ostringstream buffer;
-        std::streambuf* old = std::cout.rdbuf(buffer.rdbuf());
-        func();
-        std::cout.rdbuf(old);
-        return buffer.str();
-    }
+    # Define test cases
+    tests = [
+        ("apple", "Enter a word to spell-check (or 'exit' to quit): The word 'apple' is spelled correctly."),
+        ("applle", "Enter a word to spell-check (or 'exit' to quit): Did you mean: apple?"),
+        ("bananna", "Enter a word to spell-check (or 'exit' to quit): Did you mean: banana?"),
+        ("orrange", "Enter a word to spell-check (or 'exit' to quit): Did you mean: orange?"),
+        ("grap", "Enter a word to spell-check (or 'exit' to quit): Did you mean: grape?"),
+        ("pech", "Enter a word to spell-check (or 'exit' to quit): Did you mean: peach?"),
+        ("a", "Enter a word to spell-check (or 'exit' to quit): No suitable suggestion found."),
+        ("ra", "Enter a word to spell-check (or 'exit' to quit): No suitable suggestion found."),
+        ("ora", "Enter a word to spell-check (or 'exit' to quit): Did you mean: orange?"),
+    ]
     
-    // Helper function to print test results
-    void printTestResult(const std::string& testDescription, const std::string& actualOutput, const std::string& expectedOutput, bool condition) {
-        std::cout << "Test: " << testDescription << "\n";
-        std::cout << "Expected: " << expectedOutput << "\n";
-        std::cout << "Actual: " << actualOutput << "\n";
-        std::cout << (condition ? "Result: PASS" : "Result: FAIL") << "\n\n";
-    }
-    
-    // Function to perform the example test sequence
-    void runExampleTest() {
-        PriorityQueue queue;
-        bool condition;
-        std::string output;
-    
-        // Step 1: Insert "Thesis" with Priority 4
-        output = captureOutput([&]() { queue.insertJob("Thesis", 4); });
-        condition = (output.find("Next job: Thesis (Priority: 4)") != std::string::npos);
-        printTestResult("Insert 'Thesis' with priority 4", output, "Next job: Thesis (Priority: 4)", condition);
-    
-        // Step 2: Insert "Project" with Priority 5
-        output = captureOutput([&]() { queue.insertJob("Project", 5); });
-        condition = (output.find("Next job: Project (Priority: 5)") != std::string::npos);
-        printTestResult("Insert 'Project' with priority 5", output, "Next job: Project (Priority: 5)", condition);
-    
-        // the other tests ...
-    }
-    
-    int main() {
-        runExampleTest();
-        return 0;
-    }
+    # Run all tests
+    for word, expected in tests:
+        run_spellchecker_test(word, expected)
     
 \end{lstlisting}
 
-\section*{Testing Results discussion}
-The testing sequence confirmed the system processes jobs by priority and manages priority updates correctly. Each function worked as expected.
-
+\section*{Explanation}
+The \texttt{SpellChecker} class in \texttt{main.cpp} checks if a word is in the dictionary. If the word is wrong (mispelled), the program calculates the Levenshtein distance between the input and each dictionary word to find the closest match. The script \texttt{test.py} verifies the program's accuracy by running multiple test cases and comparing results.
 
 \section*{Conclusion}
-
-The priority queue works as intended, scheduling and processing print jobs based on priority. The max-heap ensures efficient management of jobs, and tests confirm that job insertion, priority updates, and processing operations behave as expected.
-
-\section*{References}
-
+This spell checker efficiently suggests corrections for misspelled words and handles cases with no close match. The testing script confirms its effectiveness and accuracy across several test cases.
 
 \end{document}

@@ -11,17 +11,6 @@ To compile the program, use a C++ compiler:
 
 ```bash
 g++ main.cpp -o spellchecker -std=c++11
-
-# Compile main program
-g++ main.cpp SpellChecker.cpp -o spellchecker -std=c++11
-
-# Run the user interface
-./spellchecker
-
-# Compile and run tests
-g++ test.cpp SpellChecker.cpp -o spellchecker_tests -std=c++11
-./spellchecker_tests
-
 ```
 
 Run the executable:
