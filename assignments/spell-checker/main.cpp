@@ -14,7 +14,7 @@ public:
 private:
     std::unordered_set<std::string> wordSet;
     int calculateLevenshteinDistance(const std::string& source, const std::string& target);
-    std::string findClosestMatch(const std::string& word);
+    std::vector<std::string> findClosestMatches(const std::string& word);
 };
 
 // SpellChecker Implementation
@@ -29,8 +29,7 @@ std::vector<std::string> SpellChecker::spellCheck(const std::string& word) {
         return {word};  // Word is correctly spelled
     }
     
-    std::string closestMatch = findClosestMatch(word);
-    return closestMatch.empty() ? std::vector<std::string>{} : std::vector<std::string>{closestMatch};
+    return findClosestMatches(word);
 }
 
 int SpellChecker::calculateLevenshteinDistance(const std::string& source, const std::string& target) {
@@ -48,20 +47,21 @@ int SpellChecker::calculateLevenshteinDistance(const std::string& source, const 
     return dp[source.size()][target.size()];
 }
 
-std::string SpellChecker::findClosestMatch(const std::string& word) {
+std::vector<std::string> SpellChecker::findClosestMatches(const std::string& word) {
     int minDistance = std::numeric_limits<int>::max();
-    std::string closestMatch;
+    std::vector<std::string> closestMatches;
 
     for (const auto& dictWord : wordSet) {
         int distance = calculateLevenshteinDistance(word, dictWord);
         if (distance < minDistance) {
             minDistance = distance;
-            closestMatch = dictWord;
+            closestMatches.clear();
+            closestMatches.push_back(dictWord);
+        } else if (distance == minDistance) {
+            closestMatches.push_back(dictWord);
         }
     }
-    
-    // Return suggestion only if it's reasonably close
-    return (minDistance <= word.size() / 2 + 1) ? closestMatch : "";
+    return closestMatches;
 }
 
 // Main Application
@@ -81,7 +81,11 @@ int main() {
         } else if (suggestions[0] == input) {
             std::cout << "The word '" << input << "' is spelled correctly.\n";
         } else {
-            std::cout << "Did you mean: " << suggestions[0] << "?\n";
+            std::cout << "Did you mean: ";
+            for (const auto& suggestion : suggestions) {
+                std::cout << suggestion << " ";
+            }
+            std::cout << "?\n";
         }
     }
 
