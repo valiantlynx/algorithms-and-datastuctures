@@ -43,3 +43,30 @@ example:
  - f(n) = 7log(n)³ + 15n² + 2n³ + 8
   - 0(f(n)) = 0(n³)
   cause n³ is the biggest most dominant figure in the exporession
+
+## Arrays
+well,.. its an array.
+
+there are two types
+ - dynamic
+ - static
+
+## Linked Lists
+**Head:** The first node in the Linked List
+**Tail:** The last node in the Linked List
+**Pointer:** Reference to another node  
+**Node:** An object containing data and pointer(s)
+
+### types
+ - Singly linked list
+ - Doubly linked list
+
+## Stacks
+i love them. they are fun to play around with
+a stack a datastructure where data can only be added or removed at the top. LILO (last in last out )
+think of the tower of Hanoi
+
+## Queues
+These are FIFO. cause of this adding to the back is called enqueue'ing, and removing from the front is called dequeue'ing
+think of this structure like a pipe filled with mentos. putting one in the back pushes one out on the front.
+
