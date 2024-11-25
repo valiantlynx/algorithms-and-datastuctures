@@ -34,3 +34,12 @@ Complexities orderd in smallest to largerst:
  - Cubic Time: 0(n³)
  - Exponential Time: 0(b^n), b > 1
  - Factorial Time: 0(n!)
+
+Big 0 only care when stuff are big so always check to see if there is stuff that wont matter when the expression becomes big. 
+a good practice might be for n = inf
+this is only in the theoretical case
+
+example: 
+ - f(n) = 7log(n)³ + 15n² + 2n³ + 8
+  - 0(f(n)) = 0(n³)
+  cause n³ is the biggest most dominant figure in the exporession
