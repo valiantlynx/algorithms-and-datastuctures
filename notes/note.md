@@ -69,4 +69,16 @@ think of the tower of Hanoi
 ## Queues
 These are FIFO. cause of this adding to the back is called enqueue'ing, and removing from the front is called dequeue'ing
 think of this structure like a pipe filled with mentos. putting one in the back pushes one out on the front.
+## priority queue
+Abstract datatype
 
+similar to a normal ques just that elements with a higher priority come out first
+the data must be comparable
+
+## Heap
+tree based datastructure that saatisfies the heap invariant
+value of parent node >= childnode - for all nodes
+or the opposite
+
+makes it so we end up with two types of heaps, min heap and max heap
+both are binary trees
