@@ -13,4 +13,4 @@ powerup_sound.wav   - Sound effect for power-ups
 background_music.wav - Background music
 
 You can reuse some resources from the ping pong game like arial.ttf and adapt the sound files.
-For the sprite images, you can find open-source Mario-style sprites or create simple placeholder graphics.
+For the sprite images, you can edit to use your own or make em. just know nintendo might fuck you sideways if your not careful #toFutureValiantlynx
