@@ -83,5 +83,6 @@
         "vector": "cpp",
         "xhash": "cpp",
         "xtree": "cpp"
-    }
+    },
+    "idf.pythonInstallPath": "/usr/bin/python3"
 }
