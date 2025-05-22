@@ -25,6 +25,9 @@ private:
     sf::Sprite mFlag;
     bool mLevelCompleted;
     
+    // Store a reference to the textures map for later use
+    const std::map<std::string, sf::Texture>& textures;
+    
     void loadLevel(const std::map<std::string, sf::Texture>& textures);
     void createBlock(const sf::Texture& texture, BlockType type, float x, float y);
     void createCoin(const sf::Texture& texture, float x, float y);

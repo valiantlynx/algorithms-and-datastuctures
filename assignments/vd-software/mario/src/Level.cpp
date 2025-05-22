@@ -3,6 +3,7 @@
 
 Level::Level(const std::map<std::string, sf::Texture>& textures)
     : mLevelCompleted(false)
+    , textures(textures)  // Initialize the textures reference
 {
     loadLevel(textures);
 }
@@ -163,10 +164,16 @@ void Level::checkBlockCollisions(Mario& mario) {
                     if (block->hasItem()) {
                         // 50% chance for mushroom, 50% for coin
                         if (rand() % 2 == 0) {
-                            createMushroom(mMushrooms[0]->getBounds().height > 0 ? mMushrooms[0]->getBounds().height : 16, blockBounds.left, blockBounds.top - 16.f);
+                            // Fix: Pass the texture from textures map instead of float height
+                            if (!mMushrooms.empty() && textures.find("mushroom") != textures.end()) {
+                                createMushroom(textures.at("mushroom"), blockBounds.left, blockBounds.top - 16.f);
+                            }
                         }
                         else {
-                            createCoin(mCoins[0]->getBounds().height > 0 ? mCoins[0]->getBounds().height : 16, blockBounds.left, blockBounds.top - 16.f);
+                            // Fix: Pass the texture from textures map instead of float height
+                            if (!mCoins.empty() && textures.find("coin") != textures.end()) {
+                                createCoin(textures.at("coin"), blockBounds.left, blockBounds.top - 16.f);
+                            }
                         }
                     }
                 }
