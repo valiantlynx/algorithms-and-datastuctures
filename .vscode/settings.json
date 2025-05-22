@@ -84,5 +84,8 @@
         "xhash": "cpp",
         "xtree": "cpp"
     },
-    "idf.pythonInstallPath": "/usr/bin/python3"
+    "idf.pythonInstallPath": "/usr/bin/python3",
+    "workbench.editorAssociations": {
+    "*.wav": "wavPreview.audioPreview",
+    "*.mp3": "wavPreview.audioPreview",}
 }
