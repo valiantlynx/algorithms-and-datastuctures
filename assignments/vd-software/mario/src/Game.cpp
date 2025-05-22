@@ -20,9 +20,14 @@ Game::Game()
     // Set initial Mario position
     mMario->setPosition(100.f, 300.f);
     
-    // Start background music
-    mBackgroundMusic.setLoop(true);
-    mBackgroundMusic.play();
+    // Start background music only if loaded successfully
+    if (mUsingSoundEffects && mBackgroundMusic.getStatus() != sf::Music::Status::Playing) {
+        mBackgroundMusic.setLoop(true);
+        mBackgroundMusic.play();
+    }
+    
+    // Log initialization
+    std::cout << "Game initialized. Window size: 800x600" << std::endl;
 }
 
 Game::~Game() {
@@ -147,36 +152,143 @@ void Game::loadTextures() {
     sf::Texture marioTexture;
     if (marioTexture.loadFromFile("resources/mario_sprites.png")) {
         mTextures["mario"] = marioTexture;
+        std::cout << "Successfully loaded mario_sprites.png" << std::endl;
     }
     else {
-        std::cerr << "Failed to load mario_sprites.png" << std::endl;
+        std::cerr << "Failed to load mario_sprites.png - creating placeholder texture" << std::endl;
+        // Create a placeholder texture for Mario if the file is missing
+        sf::Image placeholderImage;
+        placeholderImage.create(16, 16, sf::Color::Red);
+        sf::Texture placeholder;
+        placeholder.loadFromImage(placeholderImage);
+        mTextures["mario"] = placeholder;
     }
     
     // Load block textures
     sf::Texture blockTexture;
     if (blockTexture.loadFromFile("resources/blocks.png")) {
         mTextures["blocks"] = blockTexture;
+        std::cout << "Successfully loaded blocks.png" << std::endl;
     }
     else {
-        std::cerr << "Failed to load blocks.png" << std::endl;
+        std::cerr << "Failed to load blocks.png - creating placeholder texture" << std::endl;
+        // Create a placeholder texture for blocks
+        sf::Image placeholderImage;
+        placeholderImage.create(64, 16, sf::Color::Blue);
+        // Create different block types in the placeholder
+        for (int i = 0; i < 4; i++) {
+            for (int x = 0; x < 16; x++) {
+                for (int y = 0; y < 16; y++) {
+                    if (i == 0) { // Solid block
+                        placeholderImage.setPixel(i*16 + x, y, sf::Color(150, 75, 0));
+                    } else if (i == 1) { // Brick block
+                        if ((x < 2 || x > 14) || (y < 2 || y > 14)) {
+                            placeholderImage.setPixel(i*16 + x, y, sf::Color(150, 75, 0));
+                        } else {
+                            placeholderImage.setPixel(i*16 + x, y, sf::Color(200, 100, 0));
+                        }
+                    } else if (i == 2) { // Question block
+                        placeholderImage.setPixel(i*16 + x, y, sf::Color(255, 215, 0));
+                    } else { // Empty block
+                        placeholderImage.setPixel(i*16 + x, y, sf::Color(100, 100, 100));
+                    }
+                }
+            }
+        }
+        sf::Texture placeholder;
+        placeholder.loadFromImage(placeholderImage);
+        mTextures["blocks"] = placeholder;
     }
     
     // Load coin texture
     sf::Texture coinTexture;
     if (coinTexture.loadFromFile("resources/coin.png")) {
         mTextures["coin"] = coinTexture;
+        std::cout << "Successfully loaded coin.png" << std::endl;
     }
     else {
-        std::cerr << "Failed to load coin.png" << std::endl;
+        std::cerr << "Failed to load coin.png - creating placeholder texture" << std::endl;
+        // Create a placeholder texture for coins
+        sf::Image placeholderImage;
+        placeholderImage.create(64, 16, sf::Color::Transparent);
+        for (int i = 0; i < 4; i++) { // 4 animation frames
+            for (int x = 0; x < 16; x++) {
+                for (int y = 0; y < 16; y++) {
+                    if ((x-8)*(x-8) + (y-8)*(y-8) < 36) { // Circle shape
+                        placeholderImage.setPixel(i*16 + x, y, sf::Color::Yellow);
+                    }
+                }
+            }
+        }
+        sf::Texture placeholder;
+        placeholder.loadFromImage(placeholderImage);
+        mTextures["coin"] = placeholder;
     }
     
     // Load mushroom texture
     sf::Texture mushroomTexture;
     if (mushroomTexture.loadFromFile("resources/mushroom.png")) {
         mTextures["mushroom"] = mushroomTexture;
+        std::cout << "Successfully loaded mushroom.png" << std::endl;
     }
     else {
-        std::cerr << "Failed to load mushroom.png" << std::endl;
+        std::cerr << "Failed to load mushroom.png - creating placeholder texture" << std::endl;
+        // Create a placeholder texture for mushroom
+        sf::Image placeholderImage;
+        placeholderImage.create(16, 16, sf::Color::Transparent);
+        for (int x = 0; x < 16; x++) {
+            for (int y = 0; y < 16; y++) {
+                if (y >= 8) {
+                    placeholderImage.setPixel(x, y, sf::Color::White);
+                } else if ((x-8)*(x-8) + (y-4)*(y-4) < 25) {
+                    placeholderImage.setPixel(x, y, sf::Color::Red);
+                }
+            }
+        }
+        sf::Texture placeholder;
+        placeholder.loadFromImage(placeholderImage);
+        mTextures["mushroom"] = placeholder;
+    }
+    
+    // Load background texture
+    sf::Texture backgroundTexture;
+    if (backgroundTexture.loadFromFile("resources/background.png")) {
+        mTextures["background"] = backgroundTexture;
+        std::cout << "Successfully loaded background.png" << std::endl;
+    }
+    else {
+        std::cerr << "Failed to load background.png - creating placeholder texture" << std::endl;
+        // Create a placeholder texture for background
+        sf::Image placeholderImage;
+        placeholderImage.create(800, 600, sf::Color(107, 140, 255)); // Sky blue
+        sf::Texture placeholder;
+        placeholder.loadFromImage(placeholderImage);
+        mTextures["background"] = placeholder;
+    }
+    
+    // Load flag texture
+    sf::Texture flagTexture;
+    if (flagTexture.loadFromFile("resources/flag.png")) {
+        mTextures["flag"] = flagTexture;
+        std::cout << "Successfully loaded flag.png" << std::endl;
+    }
+    else {
+        std::cerr << "Failed to load flag.png - creating placeholder texture" << std::endl;
+        // Create a placeholder texture for flag
+        sf::Image placeholderImage;
+        placeholderImage.create(16, 32, sf::Color::Transparent);
+        for (int x = 0; x < 16; x++) {
+            for (int y = 0; y < 32; y++) {
+                if (x < 2) {
+                    placeholderImage.setPixel(x, y, sf::Color::White); // Pole
+                } else if (y < 16) {
+                    placeholderImage.setPixel(x, y, sf::Color::Green); // Flag
+                }
+            }
+        }
+        sf::Texture placeholder;
+        placeholder.loadFromImage(placeholderImage);
+        mTextures["flag"] = placeholder;
     }
 }
 

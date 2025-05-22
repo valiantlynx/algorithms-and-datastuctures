@@ -15,6 +15,9 @@ public:
     sf::FloatRect getBounds() const;
     
     bool intersects(const Entity& other) const;
+    
+    // Add method to get sprite for texture access
+    const sf::Sprite& getSprite() const { return mSprite; }
 
 protected:
     sf::Vector2f mPosition;
