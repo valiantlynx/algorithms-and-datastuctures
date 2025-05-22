@@ -20,9 +20,23 @@ A 2D Mario-style platformer game implemented in C++ using SFML.
 | Code Design | Well-structured and organized code | ✅ Completed | 10% |
 | **Total** | | **100%** | **100%** |
 
+## Prerequisites
+
+### Ubuntu 25.04
+I made this project in Ubuntu 25.04, so if you're using a different version, you may need to adjust the installation commands accordingly.
+If you're using Ubuntu 25.04 or another Debian-based Linux distribution, install SFML using:
+
+```bash
+sudo apt-get update
+sudo apt-get install libsfml-dev
+```
+
+### Other Systems
+For other operating systems, please refer to the [SFML installation guide](https://www.sfml-dev.org/download.php).
+
 ## How to Build and Run
 
-1. Make sure you have SFML 2.5 installed on your system
+1. Make sure you have SFML 2.5 installed on your system as described above
 2. Go to the root directory of the project
 3. Build using CMake:
    ```
@@ -66,6 +80,122 @@ resources/
 ```
 
 ## UML Class Diagram
+
+### Mermaid UML Diagram
+
+```mermaid
+classDiagram
+    Game --> Mario : manages
+    Game --> Level : manages
+    Entity <|-- Mario : extends
+    Entity <|-- Block : extends
+    Entity <|-- Coin : extends
+    Entity <|-- Mushroom : extends
+    Level --> Block : contains
+    Level --> Coin : contains
+    Level --> Mushroom : contains
+    Mario --> Animation : uses
+    Block --> Animation : uses
+    Coin --> Animation : uses
+    
+    class Entity {
+        -Vector2f position
+        -Vector2f velocity
+        -Sprite sprite
+        -bool active
+        +update(deltaTime) : void
+        +render(window) : void
+        +setPosition(x, y) : void
+        +getPosition() : Vector2f
+        +getBounds() : FloatRect
+        +intersects(other) : bool
+    }
+    
+    class Mario {
+        -bool isMovingLeft
+        -bool isMovingRight
+        -bool isJumping
+        -bool isOnGround
+        -MarioState state
+        -Animation currentAnimation
+        -int score
+        +handleInput(event) : void
+        +update(deltaTime) : void
+        +render(window) : void
+        +moveLeft() : void
+        +moveRight() : void
+        +jump() : void
+        +setState(state) : void
+        +incrementScore(points) : void
+    }
+    
+    class Level {
+        -vector<Block> blocks
+        -vector<Coin> coins
+        -vector<Mushroom> mushrooms
+        -bool levelCompleted
+        +loadLevel() : void
+        +checkCollisions(mario) : void
+        +render(window) : void
+        +isCompleted() : bool
+    }
+    
+    class Block {
+        -BlockType type
+        -bool isHit
+        -bool hasItem
+        +update(deltaTime) : void
+        +render(window) : void
+        +hit() : void
+        +getType() : BlockType
+    }
+    
+    class Coin {
+        -Animation animation
+        -bool collected
+        +update(deltaTime) : void
+        +render(window) : void
+        +collect() : void
+        +isCollected() : bool
+    }
+    
+    class Mushroom {
+        -bool collected
+        -float direction
+        +update(deltaTime) : void
+        +render(window) : void
+        +collect() : void
+        +isCollected() : bool
+    }
+    
+    class Animation {
+        -vector<IntRect> frames
+        -float frameDuration
+        -int currentFrame
+        -bool looping
+        +update(deltaTime) : void
+        +applyToSprite(sprite) : void
+        +restart() : void
+        +setLooping(looping) : void
+    }
+    
+    class Game {
+        -RenderWindow window
+        -map<string, Texture> textures
+        -map<string, SoundBuffer> sounds
+        -Sound jumpSound
+        -Sound coinSound
+        -Sound powerupSound
+        -Music backgroundMusic
+        -bool isPlaying
+        +run() : void
+        +processEvents() : void
+        +update(deltaTime) : void
+        +render() : void
+    }
+```
+
+### Text-Based UML Class Diagram (Alternative)
 
 ```
 ┌────────────┐         ┌────────────┐         ┌────────────┐
