@@ -1,0 +1,3 @@
+/home/valiantlynx/projects/algorithms-and-datastuctures/build/CMakeFiles/linux_uptime.dir
+/home/valiantlynx/projects/algorithms-and-datastuctures/build/CMakeFiles/edit_cache.dir
+/home/valiantlynx/projects/algorithms-and-datastuctures/build/CMakeFiles/rebuild_cache.dir

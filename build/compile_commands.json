@@ -1,0 +1,8 @@
+[
+{
+  "directory": "/home/valiantlynx/projects/algorithms-and-datastuctures/build",
+  "command": "/usr/bin/gcc -g -std=gnu99 -o CMakeFiles/linux_uptime.dir/main.c.o -c /home/valiantlynx/projects/algorithms-and-datastuctures/main.c",
+  "file": "/home/valiantlynx/projects/algorithms-and-datastuctures/main.c",
+  "output": "CMakeFiles/linux_uptime.dir/main.c.o"
+}
+]
