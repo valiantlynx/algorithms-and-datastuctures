@@ -60,6 +60,25 @@ void Koopa::die(const unsigned char i_death_type)
 
 			break;
 		}
+		case 1:
+		{
+			// Play stomp sound when Koopa is stomped
+			SoundManager::getInstance().playSound("stomp");
+
+			//Dying from being stomped.
+			no_collision_dying = 1;
+
+			vertical_speed = 0.5f * MARIO_JUMP_SPEED;
+
+			if (0 == underground)
+			{
+				texture.loadFromFile("resources/Images/KoopaDeath.png");
+			}
+			else
+			{
+				texture.loadFromFile("resources/Images/UndergroundKoopaDeath.png");
+			}
+		}
 		case 2:
 		{
 			//Dying from Koopa's shell.

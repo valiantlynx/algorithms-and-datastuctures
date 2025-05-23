@@ -8,6 +8,7 @@
 #include "headers/Mushroom.hpp"
 #include "headers/Mario.hpp"
 #include "headers/Enemy.hpp"
+#include "headers/SoundManager.hpp"
 
 Enemy::Enemy(const float i_x, const float i_y) :
 	dead(0),
@@ -27,6 +28,12 @@ bool Enemy::get_dead(const bool i_deletion) const
 void Enemy::die(const unsigned char i_death_type)
 {
 	dead = 1;
+	
+	// Play stomp sound if death type is stomping (usually 1 for stomping based on other code)
+	if (i_death_type == 1)
+	{
+		SoundManager::getInstance().playSound("stomp");
+	}
 }
 
 sf::FloatRect Enemy::get_hit_box() const

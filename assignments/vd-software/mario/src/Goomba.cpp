@@ -61,6 +61,7 @@ void Goomba::die(const unsigned char i_death_type)
 			if (0 == no_collision_dying)
 			{
 				death_timer--;
+				SoundManager::getInstance().playSound("stomp");
 			}
 
 			break;
