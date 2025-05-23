@@ -16,19 +16,19 @@ Goomba::Goomba(const bool i_underground, const float i_x, const float i_y) :
 	no_collision_dying(0),
 	underground(i_underground),
 	death_timer(GOOMBA_DEATH_DURATION),
-	walk_animation(CELL_SIZE, "Resources/Images/GoombaWalk.png", GOOMBA_WALK_ANIMATION_SPEED)
+	walk_animation(CELL_SIZE, "resources/Images/GoombaWalk.png", GOOMBA_WALK_ANIMATION_SPEED)
 {
 	horizontal_speed = -GOOMBA_SPEED;
 
 	if (0 == underground)
 	{
-		texture.loadFromFile("Resources/Images/GoombaDeath0.png");
+		texture.loadFromFile("resources/Images/GoombaDeath0.png");
 	}
 	else
 	{
-		texture.loadFromFile("Resources/Images/UndergroundGoombaDeath0.png");
+		texture.loadFromFile("resources/Images/UndergroundGoombaDeath0.png");
 
-		walk_animation.set_texture_location("Resources/Images/UndergroundGoombaWalk.png");
+		walk_animation.set_texture_location("resources/Images/UndergroundGoombaWalk.png");
 	}
 }
 
@@ -76,11 +76,11 @@ void Goomba::die(const unsigned char i_death_type)
 
 				if (0 == underground)
 				{
-					texture.loadFromFile("Resources/Images/GoombaDeath1.png");
+					texture.loadFromFile("resources/Images/GoombaDeath1.png");
 				}
 				else
 				{
-					texture.loadFromFile("Resources/Images/UndergroundGoombaDeath1.png");
+					texture.loadFromFile("resources/Images/UndergroundGoombaDeath1.png");
 				}
 			}
 		}

@@ -24,10 +24,11 @@ Mario::Mario() :
 	death_timer(MARIO_DEATH_DURATION),
 	growth_timer(0),
 	invincible_timer(0),
-	big_walk_animation(CELL_SIZE, "Resources/Images/BigMarioWalk.png", MARIO_WALK_ANIMATION_SPEED),
-	walk_animation(CELL_SIZE, "Resources/Images/MarioWalk.png", MARIO_WALK_ANIMATION_SPEED)
+	big_walk_animation(CELL_SIZE, "resources/Images/BigMarioWalk.png", MARIO_WALK_ANIMATION_SPEED),
+	walk_animation(CELL_SIZE, "resources/Images/MarioWalk.png", MARIO_WALK_ANIMATION_SPEED),
+	was_jumping(false)
 {
-	texture.loadFromFile("Resources/Images/MarioIdle.png");
+	texture.loadFromFile("resources/Images/MarioIdle.png");
 
 	sprite.setTexture(texture);
 }
@@ -56,11 +57,11 @@ void Mario::die(const bool i_instant_death)
 
 		if (0 == powerup_state)
 		{
-			texture.loadFromFile("Resources/Images/MarioDeath.png");
+			texture.loadFromFile("resources/Images/MarioDeath.png");
 		}
 		else
 		{
-			texture.loadFromFile("Resources/Images/BigMarioDeath.png");
+			texture.loadFromFile("resources/Images/BigMarioDeath.png");
 		}
 	}
 	//Mario dies, unless he's big.
@@ -70,7 +71,7 @@ void Mario::die(const bool i_instant_death)
 		{
 			dead = 1;
 
-			texture.loadFromFile("Resources/Images/MarioDeath.png");
+			texture.loadFromFile("resources/Images/MarioDeath.png");
 		}
 		else
 		{
@@ -109,11 +110,11 @@ void Mario::draw(sf::RenderWindow& i_window)
 				{
 					if (0 == draw_big)
 					{
-						texture.loadFromFile("Resources/Images/MarioIdle.png");
+						texture.loadFromFile("resources/Images/MarioIdle.png");
 					}
 					else
 					{
-						texture.loadFromFile("Resources/Images/BigMarioCrouch.png");
+						texture.loadFromFile("resources/Images/BigMarioCrouch.png");
 					}
 				}
 				else if (0 == on_ground)
@@ -122,11 +123,11 @@ void Mario::draw(sf::RenderWindow& i_window)
 					{
 						sprite.setPosition(round(x), CELL_SIZE + round(y));
 
-						texture.loadFromFile("Resources/Images/MarioJump.png");
+						texture.loadFromFile("resources/Images/MarioJump.png");
 					}
 					else
 					{
-						texture.loadFromFile("Resources/Images/BigMarioJump.png");
+						texture.loadFromFile("resources/Images/BigMarioJump.png");
 					}
 				}
 				else
@@ -137,11 +138,11 @@ void Mario::draw(sf::RenderWindow& i_window)
 						{
 							sprite.setPosition(round(x), CELL_SIZE + round(y));
 
-							texture.loadFromFile("Resources/Images/MarioIdle.png");
+							texture.loadFromFile("resources/Images/MarioIdle.png");
 						}
 						else
 						{
-							texture.loadFromFile("Resources/Images/BigMarioIdle.png");
+							texture.loadFromFile("resources/Images/BigMarioIdle.png");
 						}
 					}
 					else if ((0 < horizontal_speed && 0 == sf::Keyboard::isKeyPressed(sf::Keyboard::Right) &&
@@ -154,11 +155,11 @@ void Mario::draw(sf::RenderWindow& i_window)
 						{
 							sprite.setPosition(round(x), CELL_SIZE + round(y));
 
-							texture.loadFromFile("Resources/Images/MarioBrake.png");
+							texture.loadFromFile("resources/Images/MarioBrake.png");
 						}
 						else
 						{
-							texture.loadFromFile("Resources/Images/BigMarioBrake.png");
+							texture.loadFromFile("resources/Images/BigMarioBrake.png");
 						}
 					}
 					else
@@ -182,13 +183,13 @@ void Mario::draw(sf::RenderWindow& i_window)
 			}
 			else if (0 == on_ground)
 			{
-				texture.loadFromFile("Resources/Images/MarioJump.png");
+				texture.loadFromFile("resources/Images/MarioJump.png");
 			}
 			else
 			{
 				if (0 == horizontal_speed)
 				{
-					texture.loadFromFile("Resources/Images/MarioIdle.png");
+					texture.loadFromFile("resources/Images/MarioIdle.png");
 				}
 				else if ((0 < horizontal_speed && 0 == sf::Keyboard::isKeyPressed(sf::Keyboard::Right) &&
 						  1 == sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) ||
@@ -196,7 +197,7 @@ void Mario::draw(sf::RenderWindow& i_window)
 						  1 == sf::Keyboard::isKeyPressed(sf::Keyboard::Right)))
 
 				{
-					texture.loadFromFile("Resources/Images/MarioBrake.png");
+					texture.loadFromFile("resources/Images/MarioBrake.png");
 				}
 				else
 				{
@@ -260,7 +261,7 @@ void Mario::reset()
 
 	mushrooms.clear();
 
-	texture.loadFromFile("Resources/Images/MarioIdle.png");
+	texture.loadFromFile("resources/Images/MarioIdle.png");
 
 	sprite.setTexture(texture);
 
@@ -269,6 +270,8 @@ void Mario::reset()
 
 	walk_animation.set_animation_speed(MARIO_WALK_ANIMATION_SPEED);
 	walk_animation.set_flipped(0);
+
+	was_jumping = false;
 }
 
 void Mario::set_position(const float i_x, const float i_y)
@@ -439,6 +442,8 @@ void Mario::update(const unsigned i_view_x, MapManager& i_map_manager)
 				vertical_speed = MARIO_JUMP_SPEED;
 
 				jump_timer = MARIO_JUMP_TIMER;
+				was_jumping = true;
+				SoundManager::getInstance().playSound("jump");
 			}
 			else if (0 < jump_timer) //The longer we press the jump button, the higher Mario jumps.
 			{
@@ -559,6 +564,7 @@ void Mario::update(const unsigned i_view_x, MapManager& i_map_manager)
 					growth_timer = MARIO_GROWTH_DURATION;
 
 					y -= CELL_SIZE;
+					SoundManager::getInstance().playSound("powerup");
 				}
 			}
 		}
@@ -576,6 +582,7 @@ void Mario::update(const unsigned i_view_x, MapManager& i_map_manager)
 		for (const sf::Vector2i& cell : cells)
 		{
 			i_map_manager.set_map_cell(cell.x, cell.y, Cell::Empty);
+			SoundManager::getInstance().playSound("coin");
 		}
 
 		if (0 < growth_timer)

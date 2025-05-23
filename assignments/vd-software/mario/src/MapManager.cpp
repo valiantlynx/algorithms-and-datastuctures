@@ -8,10 +8,10 @@
 #include "Headers/MapManager.hpp"
 
 MapManager::MapManager() :
-	coin_animation(CELL_SIZE, "Resources/Images/Coin.png", COIN_ANIMATION_SPEED),
-	question_block_animation(CELL_SIZE, "Resources/Images/QuestionBlock.png", QUESTION_BLOCK_ANIMATION_SPEED)
+	coin_animation(CELL_SIZE, "resources/Images/Coin.png", COIN_ANIMATION_SPEED),
+	question_block_animation(CELL_SIZE, "resources/Images/QuestionBlock.png", QUESTION_BLOCK_ANIMATION_SPEED)
 {
-	map_texture.loadFromFile("Resources/Images/Map.png");
+	map_texture.loadFromFile("resources/Images/Map.png");
 	
 	cell_sprite.setTexture(map_texture);
 }
@@ -315,7 +315,7 @@ void MapManager::set_map_size(const unsigned short i_new_size)
 
 void MapManager::update_map_sketch(const unsigned char i_current_level)
 {
-	map_sketch.loadFromFile("Resources/Images/LevelSketch" + std::to_string(static_cast<unsigned short>(i_current_level)) + ".png");
+	map_sketch.loadFromFile("resources/Images/LevelSketch" + std::to_string(static_cast<unsigned short>(i_current_level)) + ".png");
 }
 
 void MapManager::update()

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "SoundManager.hpp"
+
 class Mario
 {
 	bool crouching;
@@ -40,6 +42,8 @@ class Mario
 
 	Animation big_walk_animation;
 	Animation walk_animation;
+
+	bool was_jumping;  // Track if Mario was jumping in the previous frame
 public:
 	Mario();
 

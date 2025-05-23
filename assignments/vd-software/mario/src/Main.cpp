@@ -12,9 +12,24 @@
 #include "Headers/Goomba.hpp"
 #include "Headers/Koopa.hpp"
 #include "Headers/ConvertSketch.hpp"
+#include "Headers/SoundManager.hpp"
 
 int main()
 {
+	// Initialize sound system
+	SoundManager& soundManager = SoundManager::getInstance();
+	
+	// Load sound effects
+	soundManager.loadSound("jump", "resources/Sounds/jump.wav");
+	soundManager.loadSound("coin", "resources/Sounds/coin.wav");
+	soundManager.loadSound("powerup", "resources/Sounds/powerup.wav");
+	soundManager.loadSound("break", "resources/Sounds/break.wav");
+	soundManager.loadSound("stomp", "resources/Sounds/stomp.wav");
+	
+	// Load background music
+	soundManager.loadMusic("theme", "resources/Sounds/theme.ogg");
+	soundManager.playMusic("theme", true); // Loop the main theme
+	
 	unsigned char current_level = 0;
 
 	unsigned short level_finish = 0;
@@ -88,6 +103,10 @@ int main()
 								mario.reset();
 
 								convert_sketch(current_level, level_finish, enemies, background_color, map_manager, mario);
+								
+								// Restart music when resetting level
+								soundManager.stopMusic("theme");
+								soundManager.playMusic("theme", true);
 							}
 						}
 					}

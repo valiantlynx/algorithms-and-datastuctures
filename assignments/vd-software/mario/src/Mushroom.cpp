@@ -15,7 +15,7 @@ Mushroom::Mushroom(const float i_x, const float i_y) :
 	y(i_y),
 	start_y(i_y)
 {
-	texture.loadFromFile("Resources/Images/Mushroom.png");
+	texture.loadFromFile("resources/Images/Mushroom.png");
 }
 
 bool Mushroom::get_dead() const
