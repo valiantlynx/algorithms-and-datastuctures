@@ -1,15 +1,34 @@
 # Super Mario Bros
-Remake of the original Super Mario Bros game.
+A 2D Mario-style platformer game implemented in C++ using SFML.
 
-## Features
-- Classic Mario gameplay with running and jumping
-- Multiple levels with unique designs
-- Coin collection
-- Block destruction
-- Mushroom power-ups that make Mario big
-- Enemy interaction (Goombas, Koopas)
-- Sound effects and music
-- Controller support (Xbox/PlayStation)
+## Requirements Met
+
+| Requirement | Description | Status | Percentage |
+|------------|-------------|--------|------------|
+| Mario Movement | Mario can run on a flat level | ✅ Completed | 10% |
+| Jumping | Mario can jump on a flat level | ✅ Completed | 10% |
+| Level Design | Mario can run and jump within an actual level | ✅ Completed | 10% |
+| Coin Collection | Mario can pick up coins | ✅ Completed | 5% |
+| Animations | Mario has running, jumping, and idle animations | ✅ Completed | 5% |
+| Block Destruction | Mario can destroy blocks | ✅ Completed | 10% |
+| Power-ups | Blocks can give mushrooms that make Mario big | ✅ Completed | 10% |
+| Audio | Music and sound effects for jumping, coin collection, and power-ups | ✅ Completed | 5% |
+| Level Completion | Level has an end goal (flag) that can be reached | ✅ Completed | 10% |
+| Controller Support | Game can be played with Xbox/PlayStation controllers | ❌ TODO | 10% |
+| UML Diagram | UML diagram of the main game classes | ✅ Completed | 5% |
+| Code Design | Well-structured and organized code | ✅ Completed | 10% |
+| **Total** | | **100%** | **100%** |
+
+## Prerequisites
+
+### Ubuntu 25.04
+I made this project in Ubuntu 25.04, so if you're using a different version, you may need to adjust the installation commands accordingly.
+If you're using Ubuntu 25.04 or another Debian-based Linux distribution, install SFML using:
+
+```bash
+sudo apt-get update
+sudo apt-get install libsfml-dev
+```
 
 ## Building the Project
 
@@ -20,29 +39,24 @@ Remake of the original Super Mario Bros game.
 ### Build Instructions
 
 #### Using CMake (Recommended)
-1. Clone the repository
-```bash
-git clone https://github.com/your-username/Super-Mario-Bros.git
-cd Super-Mario-Bros
-```
 
-2. Create a build directory and navigate to it
+1. Create a build directory and navigate to it
 ```bash
 mkdir build
 cd build
 ```
 
-3. Generate build files with CMake
+1. Generate build files with CMake
 ```bash
 cmake ..
 ```
 
-4. Build the project
+1. Build the project
 ```bash
-cmake --build .
+make
 ```
 
-5. Run the game
+1. Run the game
 ```bash
 ./mario
 ```
