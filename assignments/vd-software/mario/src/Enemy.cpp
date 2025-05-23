@@ -29,7 +29,7 @@ void Enemy::die(const unsigned char i_death_type)
 {
 	dead = 1;
 	
-	// Play stomp sound if death type is stomping (usually 1 for stomping based on other code)
+	// Play stomp sound if death type is stomping (usually 1 for stomping based on other programmers code)
 	if (i_death_type == 1)
 	{
 		SoundManager::getInstance().playSound("stomp");

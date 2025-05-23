@@ -34,8 +34,7 @@ unsigned short MapManager::get_map_width() const
 void MapManager::add_brick_particles(const unsigned short i_x, const unsigned short i_y)
 {
 	//Adding brick particles.
-	//I was too lazy to add randomness.
-	//It still looks cool, in my opinion.
+	//TODO: add randomness.
 	brick_particles.push_back(Object(i_x, i_y, -0.25f * BRICK_PARTICLE_SPEED, -1.5f * BRICK_PARTICLE_SPEED));
 	brick_particles.push_back(Object(i_x + 0.5f * CELL_SIZE, i_y, 0.25f * BRICK_PARTICLE_SPEED, -1.5f * BRICK_PARTICLE_SPEED));
 	brick_particles.push_back(Object(i_x, i_y + 0.5f * CELL_SIZE, -0.5f * BRICK_PARTICLE_SPEED, -BRICK_PARTICLE_SPEED));
@@ -53,7 +52,7 @@ void MapManager::draw_map(const bool i_draw_background, const bool i_underground
 	unsigned short map_height = floor(map_sketch.getSize().y / 3.f);
 	unsigned short map_start = floor(i_view_x / static_cast<float>(CELL_SIZE));
 
-	//We're drawing the coin before drawing the blocks because we want it to appear behind the question block.
+	//drawing the coin before drawing the blocks because its better if it to appear behind the question block.
 	if (0 == i_draw_background)
 	{
 		for (const Object& question_block_coin : question_block_coins)
@@ -72,9 +71,8 @@ void MapManager::draw_map(const bool i_draw_background, const bool i_underground
 
 			cell_sprite.setPosition(CELL_SIZE * a, CELL_SIZE * b);
 
-			//This code is a big mess.
-			//But it works.
-			//Keep that in mind before judging me.
+			//TODO: fix this shit.
+			//But it works. 
 			if (1 == i_draw_background)
 			{
 				sf::Color pixel = map_sketch.getPixel(a, b + 2 * map_height);
@@ -365,12 +363,12 @@ std::vector<unsigned char> MapManager::map_collision(const std::vector<Cell>& i_
 				{
 					if (i_check_cells.end() != std::find(i_check_cells.begin(), i_check_cells.end(), map[b][a]))
 					{
-						//We're gonna return a vector of numbers. Each number is a binary representation of collisions in a single row.
+						// return a vector of numbers. Each number is a binary representation of collisions in a single row.
 						output[a - floor(i_hitbox.top / CELL_SIZE)] += pow(2, floor((ceil(i_hitbox.left + i_hitbox.width) - 1) / CELL_SIZE) - b);
 					}
 				}
 			}
-			//We're assuming that the map borders have walls.
+			//assuming that the map borders have walls.
 			else if (i_check_cells.end() != std::find(i_check_cells.begin(), i_check_cells.end(), Cell::Wall))
 			{
 				output[a - floor(i_hitbox.top / CELL_SIZE)] += pow(2, floor((ceil(i_hitbox.left + i_hitbox.width) - 1) / CELL_SIZE) - b);
@@ -399,7 +397,7 @@ std::vector<unsigned char> MapManager::map_collision(const std::vector<Cell>& i_
 				{
 					if (i_check_cells.end() != std::find(i_check_cells.begin(), i_check_cells.end(), map[b][a]))
 					{
-						//Since C++ doesn't support returning 2 vectors, we're gonna change the argument vector.
+						//Since C++ doesn't support returning 2 vectors, change the argument vector.
 						i_collision_cells.push_back(sf::Vector2i(b, a));
 
 						output[a - floor(i_hitbox.top / CELL_SIZE)] += pow(2, floor((ceil(i_hitbox.left + i_hitbox.width) - 1) / CELL_SIZE) - b);

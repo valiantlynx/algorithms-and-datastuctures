@@ -39,7 +39,6 @@ int main()
 
 	std::chrono::steady_clock::time_point previous_time;
 
-	//Using smart pointer because I'm smart.
 	//(Because we need to store both Goomba and Koopa objects in the same vector).
 	std::vector<std::shared_ptr<Enemy>> enemies;
 
@@ -67,14 +66,6 @@ int main()
 		lag += delta_time;
 
 		previous_time += delta_time;
-
-		//Soooooo, how was your day?
-		//Mine was good. I ate some cookies.
-		//Then I watched Youtube.
-		//...
-		//...
-		//...
-		//Yeah.
 
 		while (FRAME_DURATION <= lag)
 		{

@@ -110,9 +110,7 @@ void Goomba::draw(const unsigned i_view_x, sf::RenderWindow& i_window)
 
 void Goomba::update(const unsigned i_view_x, const std::vector<std::shared_ptr<Enemy>>& i_enemies, const MapManager& i_map_manager, Mario& i_mario)
 {
-	//I've already explained most of the code here in the Mario class.
-	//I know it's bad to write the same code multiple times.
-	//But I kinda don't care.
+	//see  the Mario class.
 
 	//Making sure we don't update Goomba outside the view.
 	if (-CELL_SIZE < y && x >= static_cast<int>(i_view_x) - CELL_SIZE - ENTITY_UPDATE_AREA && x < ENTITY_UPDATE_AREA + SCREEN_WIDTH + i_view_x && y < SCREEN_HEIGHT)
@@ -231,7 +229,7 @@ void Goomba::update(const unsigned i_view_x, const std::vector<std::shared_ptr<E
 					//If Mario is falling...
 					if (0 < i_mario.get_vertical_speed())
 					{
-						//... then we get squished.
+						//... then we place death upon him.
 						die(1);
 
 						i_mario.set_vertical_speed(0.5f * MARIO_JUMP_SPEED);

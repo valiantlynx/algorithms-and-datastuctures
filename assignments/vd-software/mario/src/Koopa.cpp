@@ -128,8 +128,7 @@ void Koopa::draw(const unsigned i_view_x, sf::RenderWindow& i_window)
 
 void Koopa::update(const unsigned i_view_x, const std::vector<std::shared_ptr<Enemy>>& i_enemies, const MapManager& i_map_manager, Mario& i_mario)
 {
-	//I've already explained most of the code here in the Mario and Goomba classes.
-	//I'm so bad at writing comments lol.
+	//see the Mario and Goomba classes.
 
 	if (-CELL_SIZE < y && x >= static_cast<int>(i_view_x) - CELL_SIZE - ENTITY_UPDATE_AREA && x < ENTITY_UPDATE_AREA + SCREEN_WIDTH + i_view_x && y < SCREEN_HEIGHT)
 	{
@@ -251,7 +250,7 @@ void Koopa::update(const unsigned i_view_x, const std::vector<std::shared_ptr<En
 						//Turning into a shell.
 						if (0 < i_mario.get_vertical_speed())
 						{
-							//We check the collision only once after we collide with Mario.
+							// check the collision only once after we collide with Mario.
 							check_collision = 0;
 
 							horizontal_speed = 0;

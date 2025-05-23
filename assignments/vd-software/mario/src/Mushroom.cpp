@@ -41,7 +41,7 @@ void Mushroom::set_dead(const bool i_value)
 
 void Mushroom::update(const unsigned i_view_x, const MapManager& i_map_manager)
 {
-	//Mushrooms behave the same way Goombas do so go check out the Goomba class.
+	//Mushrooms behave the same way Goombas do, see Goomba class.
 
 	if (0 == dead)
 	{

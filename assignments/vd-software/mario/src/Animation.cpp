@@ -24,8 +24,7 @@ void Animation::draw(sf::RenderWindow& i_window)
 	}
 	else
 	{
-		//This is why I love SFML.
-		//It allows you to read the texture from right to left using negative numbers.
+		//read the texture from right to left using negative numbers.
 		sprite.setTextureRect(sf::IntRect(frame_width * (1 + current_frame), 0, -frame_width, texture.getSize().y));
 	}
 

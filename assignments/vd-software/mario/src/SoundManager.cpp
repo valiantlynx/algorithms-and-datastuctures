@@ -7,11 +7,11 @@ SoundManager& SoundManager::getInstance() {
 }
 
 SoundManager::SoundManager() {
-    // Constructor
+    // it a Constructor
 }
 
 SoundManager::~SoundManager() {
-    // Clean up music resources
+    // Clean up the music resources
     for (auto& pair : music) {
         delete pair.second;
     }

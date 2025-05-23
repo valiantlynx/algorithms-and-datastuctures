@@ -53,7 +53,7 @@ unsigned char map_collision(float i_x, float i_y, const std::vector<Cell>& i_che
 		{
 			if (0 <= y && y < i_map[0].size())
 			{
-				//Checking if the cell's type is one of the cell types we need to check.
+				//Checking if the cell's type is one of the cell types .
 				if (i_check_cells.end() != std::find(i_check_cells.begin(), i_check_cells.end(), i_map[x][y]))
 				{
 					//In binary this will be 0001, 0010, 0100 or 1000.
@@ -61,7 +61,7 @@ unsigned char map_collision(float i_x, float i_y, const std::vector<Cell>& i_che
 				}
 			}
 		}
-		//We're gonna assume that the map borders are walls.
+		//onna assume that the map borders are walls.
 		else if (i_check_cells.end() != std::find(i_check_cells.begin(), i_check_cells.end(), Cell::Wall))
 		{
 			output += pow(2, a);

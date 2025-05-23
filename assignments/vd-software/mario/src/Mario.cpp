@@ -50,7 +50,7 @@ float Mario::get_x() const
 
 void Mario::die(const bool i_instant_death)
 {
-	//Mario instantly dies and it doesn't matter if he's big or small.
+	//Mario instantly dies and it whether if he's big or small.
 	if (1 == i_instant_death)
 	{
 		dead = 1;
@@ -250,11 +250,7 @@ void Mario::reset()
 	jump_timer = 0;
 	powerup_state = 0;
 
-	//If it wasn't for this, everything would be zerfect! (see what I did there?)
-	//...
-	//...
-	//...
-	//Yeah, I agree. That was bad.
+	//If it wasn't for this, everything would be good!
 	death_timer = MARIO_DEATH_DURATION;
 	growth_timer = 0;
 	invincible_timer = 0;
@@ -287,7 +283,7 @@ void Mario::set_vertical_speed(const float i_value)
 
 void Mario::update(const unsigned i_view_x, MapManager& i_map_manager)
 {
-	//We make Mario bounce after updating all the enemies to prevent a bug (Go to Mario.hpp for explanation).
+	//We make Mario bounce after updating all the enemies to prevent a bug (Go to Mario.hpp for more).
 	if (0 != enemy_bounce_speed)
 	{
 		vertical_speed = enemy_bounce_speed;
@@ -304,10 +300,10 @@ void Mario::update(const unsigned i_view_x, MapManager& i_map_manager)
 	{
 		bool moving = 0;
 
-		//So basically, the map_collision function returns a vector of numbers. Each number is a binary representation of the collisions in a single row. And we're storing that vector in this vector.
+		//map_collision function returns a vector of numbers. Each number is a binary representation of the collisions in a single row. that vector is storing that vector in this vector.
 		std::vector<unsigned char> collision;
 
-		//Oh yeah, the map_collision function can also return the coordinates of cells intersecting the hitbox. We need that too.
+		// map_collision function can also return the coordinates of cells intersecting the hitbox.
 		std::vector<sf::Vector2i> cells;
 
 		sf::FloatRect hit_box = get_hit_box();
@@ -361,7 +357,7 @@ void Mario::update(const unsigned i_view_x, MapManager& i_map_manager)
 				hit_box.height += CELL_SIZE;
 				hit_box.top -= CELL_SIZE;
 
-				//Making sure we can stand up without hitting anything.
+				//so we can stand up without hitting anything.
 				collision = i_map_manager.map_collision({Cell::ActivatedQuestionBlock, Cell::Brick, Cell::Pipe, Cell::QuestionBlock, Cell::Wall}, hit_box);
 
 				if (1 == std::all_of(collision.begin(), collision.end(), [](const unsigned char i_value)
@@ -445,8 +441,8 @@ void Mario::update(const unsigned i_view_x, MapManager& i_map_manager)
 				was_jumping = true;
 				SoundManager::getInstance().playSound("jump");
 			}
-			else if (0 < jump_timer) //The longer we press the jump button, the higher Mario jumps.
-			{
+			else if (0 < jump_timer) //The longer we press the jump button, the higher Mario jumps. just a nice feature
+			{ 
 				vertical_speed = MARIO_JUMP_SPEED;
 
 				jump_timer--;
@@ -475,7 +471,7 @@ void Mario::update(const unsigned i_view_x, MapManager& i_map_manager)
 		{
 			if (0 > vertical_speed)
 			{
-				//Destroying bricks!!!!
+				//Destroying bricks
 				if (0 == crouching && 0 < powerup_state)
 				{
 					i_map_manager.map_collision({Cell::Brick}, cells, hit_box);
@@ -552,7 +548,7 @@ void Mario::update(const unsigned i_view_x, MapManager& i_map_manager)
 
 		for (Mushroom& mushroom : mushrooms)
 		{
-			//Mushroom eating and becoming BIG, STRONG, MASCULINE!!!!
+			//Mushroom eating and becoming big!
 			if (1 == get_hit_box().intersects(mushroom.get_hit_box()))
 			{
 				mushroom.set_dead(1);

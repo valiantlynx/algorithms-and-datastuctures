@@ -7,10 +7,7 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 class Goomba : public Enemy
 {
-	//This is kinda hard to explain.
-	//Okay, so both Goomba and Koopa can die from Koopa's shell.
-	//And when they do, they bounce of the screen.
-	//So we need a variable that lets us know "Hey! I hit the shell. I'm dying right now from hitting that shell. That damn shell!".
+	//We'll use this to make sure that we check the collision with Mario only once when he collides with us.
 	bool no_collision_dying;
 	//The underground Goomba looks different than the regular Goomba.
 	bool underground;

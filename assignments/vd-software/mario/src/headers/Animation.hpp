@@ -6,7 +6,7 @@ class Animation
 {
 	bool flipped;
 
-	//We'll increment the current_frame as soon as this iterator reaches the animation_speed.
+	//increment the current_frame as soon as this iterator reaches the animation_speed.
 	unsigned short animation_iterator;
 	//After how many frames do we change the current_frame?
 	unsigned short animation_speed;

@@ -13,8 +13,7 @@
 #include "headers/Koopa.hpp"
 #include "headers/ConvertSketch.hpp"
 
-//One person asked, "Why don't you use Tiled Map Editor?"
-//My answer is, "Why should I work hard, when I don't have to work hard?"
+
 void convert_sketch(const unsigned char i_current_level, unsigned short& i_level_finish, std::vector<std::shared_ptr<Enemy>>& i_enemies, sf::Color& i_background_color, MapManager& i_map_manager, Mario& i_mario)
 {
 	unsigned short map_height;
@@ -45,7 +44,7 @@ void convert_sketch(const unsigned char i_current_level, unsigned short& i_level
 				}
 				else if (sf::Color(0, 146, 0) == pixel || sf::Color(0, 182, 0) == pixel || sf::Color(0, 219, 0) == pixel)
 				{
-					//Multiple colors, because we need to know which part of the pipe we need to draw.
+					//Multiple colors,  need to know which part of the pipe we need to draw.
 					i_map_manager.set_map_cell(a, b, Cell::Pipe);
 				}
 				else if (sf::Color(255, 73, 85) == pixel || sf::Color(255, 146, 85) == pixel)

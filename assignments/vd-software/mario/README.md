@@ -148,7 +148,3 @@ The game includes multiple sound effects:
 4. Block breaking
 5. Enemy stomping
 6. Background music theme
-
-## Original Development Videos
-- Part 1: https://youtu.be/7D4uoSoQsjw
-- Part 2: https://youtu.be/6SnGgsgV_GY

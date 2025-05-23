@@ -16,10 +16,7 @@ constexpr float MUSHROOM_SPEED = 1;
 constexpr unsigned char CELL_SIZE = 16;
 //We use this constant when Mario is growing or when he's invincible.
 constexpr unsigned char MARIO_BLINKING = 4;
-//Lemme explain:
-//1) Mario gets hit by an enemy.
-//2) Mario looks at you like "Oh no! Me lost! Mama mia!" and pauses for this amount.
-//3) Mario bounces off the screen.
+//We use this constant to make sure that Mario doesn't die when he hits the ground.
 constexpr unsigned char MARIO_DEATH_DURATION = 32;
 constexpr unsigned char MARIO_GROWTH_DURATION = 64;
 constexpr unsigned char MARIO_INVINCIBILITY_DURATION = 128;
@@ -55,7 +52,6 @@ enum Cell
 };
 
 //We use this for brick particles.
-//Damn, I should've called it "Particle"! I'm so dumb!
 struct Object
 {
 	float horizontal_speed;
