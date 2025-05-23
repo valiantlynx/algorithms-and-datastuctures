@@ -10,7 +10,7 @@ find_package(SFML 2.5 COMPONENTS graphics window system audio REQUIRED)
 
 # src files
 file(GLOB SOURCES "src/*.cpp")
-file(GLOB HEADERS "src/Headers/*.hpp")
+file(GLOB HEADERS "src/headers/*.hpp")
 
 # Add executable
 add_executable(mario ${SOURCES} ${HEADERS})

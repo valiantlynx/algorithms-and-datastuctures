@@ -3,11 +3,11 @@
 #include <cmath>
 #include <SFML/Graphics.hpp>
 
-#include "Headers/Animation.hpp"
-#include "Headers/Global.hpp"
-#include "Headers/MapManager.hpp"
-#include "Headers/Mushroom.hpp"
-#include "Headers/Mario.hpp"
+#include "headers/Animation.hpp"
+#include "headers/Global.hpp"
+#include "headers/MapManager.hpp"
+#include "headers/Mushroom.hpp"
+#include "headers/Mario.hpp"
 
 Mario::Mario() :
 	crouching(0),

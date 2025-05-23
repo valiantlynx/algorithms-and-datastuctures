@@ -2,10 +2,10 @@
 #include <cmath>
 #include <SFML/Graphics.hpp>
 
-#include "Headers/Animation.hpp"
-#include "Headers/Global.hpp"
-#include "Headers/MapManager.hpp"
-#include "Headers/Mushroom.hpp"
+#include "headers/Animation.hpp"
+#include "headers/Global.hpp"
+#include "headers/MapManager.hpp"
+#include "headers/Mushroom.hpp"
 
 Mushroom::Mushroom(const float i_x, const float i_y) :
 	dead(0),

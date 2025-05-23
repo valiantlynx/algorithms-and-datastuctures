@@ -3,15 +3,15 @@
 #include <chrono>
 #include <SFML/Graphics.hpp>
 
-#include "Headers/Animation.hpp"
-#include "Headers/Global.hpp"
-#include "Headers/MapManager.hpp"
-#include "Headers/Mushroom.hpp"
-#include "Headers/Mario.hpp"
-#include "Headers/Enemy.hpp"
-#include "Headers/Goomba.hpp"
-#include "Headers/Koopa.hpp"
-#include "Headers/ConvertSketch.hpp"
+#include "headers/Animation.hpp"
+#include "headers/Global.hpp"
+#include "headers/MapManager.hpp"
+#include "headers/Mushroom.hpp"
+#include "headers/Mario.hpp"
+#include "headers/Enemy.hpp"
+#include "headers/Goomba.hpp"
+#include "headers/Koopa.hpp"
+#include "headers/ConvertSketch.hpp"
 
 //One person asked, "Why don't you use Tiled Map Editor?"
 //My answer is, "Why should I work hard, when I don't have to work hard?"

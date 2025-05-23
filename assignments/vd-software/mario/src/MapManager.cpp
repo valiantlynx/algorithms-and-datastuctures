@@ -3,9 +3,9 @@
 #include <cmath>
 #include <SFML/Graphics.hpp>
 
-#include "Headers/Animation.hpp"
-#include "Headers/Global.hpp"
-#include "Headers/MapManager.hpp"
+#include "headers/Animation.hpp"
+#include "headers/Global.hpp"
+#include "headers/MapManager.hpp"
 
 MapManager::MapManager() :
 	coin_animation(CELL_SIZE, "resources/Images/Coin.png", COIN_ANIMATION_SPEED),

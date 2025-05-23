@@ -1,4 +1,4 @@
-#include "Headers/SoundManager.hpp"
+#include "headers/SoundManager.hpp"
 #include <iostream>
 
 SoundManager& SoundManager::getInstance() {

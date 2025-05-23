@@ -4,8 +4,8 @@
 #include <vector>
 #include <cmath>
 
-#include "Headers/Global.hpp"
-#include "Headers/MapCollision.hpp"
+#include "headers/Global.hpp"
+#include "headers/MapCollision.hpp"
 
 unsigned char map_collision(float i_x, float i_y, const std::vector<Cell>& i_check_cells, const Map& i_map)
 {

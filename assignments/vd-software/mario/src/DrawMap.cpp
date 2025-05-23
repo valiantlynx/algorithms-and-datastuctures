@@ -3,8 +3,8 @@
 #include <cmath>
 #include <SFML/Graphics.hpp>
 
-#include "Headers/Global.hpp"
-#include "Headers/DrawMap.hpp"
+#include "headers/Global.hpp"
+#include "headers/DrawMap.hpp"
 
 void draw_map(unsigned i_view_x, const sf::Image& i_map_sketch, sf::RenderWindow& i_window, const sf::Texture& i_map_texture, const Map& i_map)
 {

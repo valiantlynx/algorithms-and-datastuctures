@@ -3,13 +3,13 @@
 #include <chrono>
 #include <SFML/Graphics.hpp>
 
-#include "Headers/Animation.hpp"
-#include "Headers/Global.hpp"
-#include "Headers/MapManager.hpp"
-#include "Headers/Mushroom.hpp"
-#include "Headers/Mario.hpp"
-#include "Headers/Enemy.hpp"
-#include "Headers/Goomba.hpp"
+#include "headers/Animation.hpp"
+#include "headers/Global.hpp"
+#include "headers/MapManager.hpp"
+#include "headers/Mushroom.hpp"
+#include "headers/Mario.hpp"
+#include "headers/Enemy.hpp"
+#include "headers/Goomba.hpp"
 
 Goomba::Goomba(const bool i_underground, const float i_x, const float i_y) :
 	Enemy(i_x, i_y),

@@ -1,6 +1,6 @@
 #include <SFML/Graphics.hpp>
 
-#include "Headers/Animation.hpp"
+#include "headers/Animation.hpp"
 
 Animation::Animation(const unsigned short i_frame_width, const std::string& i_texture_location, const unsigned short i_animation_speed) :
 	flipped(0),
